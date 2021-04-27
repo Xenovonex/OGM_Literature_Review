@@ -1,0 +1,84 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Literature_Review_Motion_Prediction_Rutger_Dirks.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+Database file #1: bibliography.bib
+I was expecting a `,' or a `}'---line 69 of file bibliography.bib
+ :  
+ :  year={2018}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--entry type for "eu2020website" isn't style-file defined
+--line 310 of file bibliography.bib
+Repeated entry---line 330 of file bibliography.bib
+ : @inproceedings{lee2017desire
+ :                             ,
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 786 of file bibliography.bib
+ :  urldate = {2021-03-01} 
+ :                         %date of last access
+I'm skipping whatever remains of this entry
+Repeated entry---line 987 of file bibliography.bib
+ : @article{geiger2013vision
+ :                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 998 of file bibliography.bib
+ : @inproceedings{sun2020scalability
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1051 of file bibliography.bib
+ : @inproceedings{cordts2016cityscapes
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1119 of file bibliography.bib
+ : @inproceedings{lin2019tsm
+ :                          ,
+I'm skipping whatever remains of this entry
+Warning--empty booktitle in vademecumeu2018road
+Warning--empty year in djuric2018motionpred
+Warning--empty journal in uah2020d4
+Warning--empty journal in dempster1967upper
+You've used 103 entries,
+            1876 wiz_defined-function locations,
+            996 strings with 24855 characters,
+and the built_in function-call counts, 33492 in all, are:
+= -- 3232
+> -- 1403
+< -- 0
++ -- 506
+- -- 403
+* -- 2338
+:= -- 4502
+add.period$ -- 105
+call.type$ -- 103
+change.case$ -- 100
+chr.to.int$ -- 0
+cite$ -- 107
+duplicate$ -- 1800
+empty$ -- 3185
+format.name$ -- 403
+if$ -- 8175
+int.to.chr$ -- 0
+int.to.str$ -- 103
+missing$ -- 101
+newline$ -- 315
+num.names$ -- 103
+pop$ -- 499
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1276
+stack$ -- 0
+substring$ -- 2552
+swap$ -- 769
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 4
+while$ -- 324
+width$ -- 106
+write$ -- 977
+(There were 7 error messages)

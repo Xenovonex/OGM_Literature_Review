@@ -1,0 +1,58 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem Description}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Current Solutions}{5}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Long-term motion prediction}{5}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Environmental context}{5}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Social Context}{7}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.4}Uncertainty and Multi-modality}{7}{subsubsection.1.2.4}%
+\contentsline {subsubsection}{\numberline {1.2.5}Real-time motion prediction}{7}{subsubsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.3}Research Questions}{8}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Chapter overview}{8}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Occupancy Grid Mapping}{9}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Probabilistic Occupancy Grid Mapping}{10}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Bayesian update with inverse sensor model}{10}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Bayesian update with forward sensor model}{10}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}Comparison of the sensor models}{11}{subsubsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.2}Evidential Occupancy Grid Mapping}{12}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}The Dempster-Shafer Theory}{12}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Applying \gls {DST} to generate \glspl {OGM}}{13}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}Alternative methods for Occupancy Grid Mapping}{14}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Possibilistic Occupancy Grid Mapping}{14}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}\gls {NN}-based Occupancy Grid Mapping}{14}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Comparison methods for \glspl {OGM}}{14}{subsubsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.4}Occupancy Grid Map extended forms}{15}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}3D Occupancy Grid Mapping}{15}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Semantic Occupancy Grid Mapping}{15}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}Dynamic Occupancy Grid Mapping}{15}{subsubsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.5}What OGM form is most suitable to use in OGM prediction methods?}{17}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Datasets}{18}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Tracking and Motion prediction Datasets}{18}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Object Detection Datasets}{19}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Semantic Segmentation Datasets}{20}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}What dataset is most suitable to generate OGM sequences for OGM prediction?}{20}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Metrics}{23}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Occupancy Grid Map Metrics}{23}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}What is the best metric to determine the quantitative accuracy of a predicted OGM?}{23}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Sequential input Deep Learning Networks}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}RNN}{24}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Sequential Convolutional Neural Networks}{24}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Transformer Networks}{24}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}What Deep Learning network is best to use for OGM prediction?}{24}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Prediction Methods using Occupancy Grid Maps}{25}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Occupancy Grid Map Prediction Methods}{25}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}PredNet based OGM predictors}{25}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Convolutional neural network based OGM predictors}{25}{subsubsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.3}Deep tracking based OGM predictors}{26}{subsubsection.6.1.3}%
+\contentsline {subsubsection}{\numberline {6.1.4}MotionNet multi-channel BEV map predictor}{26}{subsubsection.6.1.4}%
+\contentsline {subsection}{\numberline {6.2}State Prediction Methods}{26}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Transformer based predictors}{26}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}LiDAR based OGMs for state predictor input}{27}{subsubsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.3}What method provides the best OGM predictions?}{27}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Discussion and Conclusion}{28}{section.7}%
+\contentsline {section}{\numberline {8}Research Proposal}{29}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Why VRU behavior?}{29}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Why embed environmental cues in a grid map representation?}{29}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}What method performs better with missing data?}{29}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}What method performs better with sensor fusion input/input from multiple sensors?}{29}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Why the ECP dataset?}{29}{subsection.8.5}%

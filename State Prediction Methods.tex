@@ -1,0 +1,16 @@
+\section{State Prediction Methods} \label{sec:state_methods}
+
+%% Transformer 
+\subsection{Transformer based predictors}
+Li \cite{li2020end} proposes an end-to-end network that performs object detection and trajectory prediction of an AV's environment using it's raw LiDAR and camera data as input in the form of BEV 3D occupancy grid map data. The first part of the network performs multi sensor object detection where LiDAR and camera data are fused to provide spatial and representational features of the surrounding actors. These features are provided as a spatial input sequence of actor data to the Tranformer part of the network. The transformer outputs actor interaction features that are processed by an autoregressive recurrent model to predict the future states and features of the actors. These features can be projected onto a grid map for the AV's motion planning purposes. This network is trained and evaluated on the ATG4D \cite{luo2018fast} and NuScenes \cite{caesar2020nuscenes} datasets. The Transformer method outperforms all other methods that were trained on the ATG4D and NuScenes datasets, based on the Detection Average Precision (AP), Average and Final Displacement Error (ADE, FDE), and Trajectory Collision Rate (TCR) metrics. Qualitative results show that collision avoidance is done well compared to the baseline Transformer method. This method did not yet include pedestrians and bicyclists. Because of their more unpredictable behavior, more research should be done to verify that this network also works well on VRU motion prediction.
+
+%% 3D voxel grid maps based on LiDAR data
+\subsection{LiDAR based OGMs for state predictor input}
+Luo \cite{luo2018fast} proposes a real-time end-to-end 3D detection, tracking and motion prediction network which only uses a CNN network and performs a task within 30ms. An AV's LiDAR data is encoded by a 4D tensor of 3D voxel OGMs in space over several time frames. Having 3D input voxel OGMs makes the learning progress easier since the network can use priors about typical object sizes. A CNN performs 3D convolutions on the voxel OGM to detect, track, and predict objects by outputting 3D bounding boxes of the predicted future object locations. For motion forecasting the network performs well and can predict 10 frames with an average L2 distance of 0.33 meter. It has a recall of 92.5\%. It performs qualitatively well for both static and dynamic object forecasting. However, due to the sparsity of the LiDAR 3D points, some objects are not detected properly and therefore not forecasted well. The network is also not tested for pedestrians and longer term predictions.
+
+
+%% Methods that use a single OGM as contextual information beside past trajectories
+
+
+
+\subsection{What method provides the best OGM predictions?}

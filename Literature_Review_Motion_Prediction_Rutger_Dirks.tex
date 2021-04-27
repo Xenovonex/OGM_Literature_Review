@@ -1,0 +1,136 @@
+\documentclass[a4paper]{article}
+% !TeX spellcheck = en_US 
+
+%%%%%%%% CREATE DOCUMENT STRUCTURE %%%%%%%%
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{eurosym}
+%\usepackage{subfig}
+\usepackage{listings}
+\usepackage{siunitx}
+
+\lstset{language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{sectsty}
+%\usepackage{apacite}
+\usepackage{float}
+\usepackage{titling} 
+\usepackage{blindtext}
+\usepackage{url}            % simple URL typesetting
+%\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xcolor}
+%\usepackage[table,xcdraw]{xcolor}
+\definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
+\usepackage{array}
+\usepackage{pgfplots}
+
+
+\usepackage[acronym]{glossaries}
+\makenoidxglossaries
+\newacronym[plural=AVs]{AV}{AV}{Autonomous Vehicle}
+\newacronym[plural=VRUs]{VRU}{VRU}{Vulnerable Road User}
+\newacronym[plural=OGMs]{OGM}{OGM}{Occupancy Grid Map}
+\newacronym{DST}{DST}{Dempster-Shafer Theory}
+\newacronym{BEV}{BEV}{bird's-eye view}
+\newacronym{FOD}{FOD}{Frame of Discernment}
+\newacronym{BBA}{BBA}{Basic Belief Assignment}
+\newacronym{NN}{NN}{Artificial Neural Network}
+\newacronym{STIP}{STIP}{Stanford-TRI Intent Prediction}
+\newacronym{ECP2.5D}{ECP2.5D}{Eurocity Persons 2.5D}
+\newacronym{BDD100K}{BDD100K}{Berkely DeepDrive 100K}
+\newacronym{KITTI}{KITTI}{Karlsruhe Institute of Technology and Toyota Technological Institute}
+
+\usepackage{booktabs}
+\newenvironment{conditions}
+{\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+	{\end{tabular}\par\vspace{\belowdisplayskip}}
+\setlength{\parindent}{0in} 
+
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+%%%%%%%% DOCUMENT %%%%%%%%
+\title{Literature Review on Motion Prediction of Vulnerable Road Users using Occupancy Grid Maps}
+\author{Rutger Dirks}
+\date{\today{}}
+
+
+\begin{document}
+	\fontfamily{ptm}\selectfont % Fonts: qcr, lmodern(lmr), mathptmx(ptm)
+	
+	%%%% Title Page
+	\begin{titlepage}
+
+		\maketitle{}
+		
+		\begin{center}
+			% Department
+			\textsc{3mE Department of Cognitive Robotics}\\[1cm]
+			% University
+			\textsc{\LARGE Delft University of Technology}\\[1cm]
+			%Supervisors
+			\textsc{Supervisors: Ewoud Pool and Dariu Gavrila}\\[5cm]
+		\end{center}
+
+
+		
+
+	\end{titlepage}
+	\fontfamily{ptm} \selectfont	
+	\newpage
+	\printnoidxglossary[type=acronym]
+	\printacronyms
+	\newpage
+	\tableofcontents{}	
+	\newpage	
+	\input{Introduction}
+	\newpage
+	\input{Occupancy Grid Mapping}
+	\newpage
+	\input{Datasets and Metrics}
+	\newpage
+	\input{Sequential input Deep Learning Networks}
+	\newpage
+	\input{Occupancy Grid Map Prediction Methods}
+	\newpage
+	\input{Conclusion}
+	\newpage
+	%\input{Future work}
+	%\newpage
+	\input{Research Proposal}
+
+	
+	%%%%%%%% EXTRA TIPS %%%%%%%%
+	%% hou deze structuur aan voor afbeeldingen
+	%%\begin{figure}[H]
+	%%\includegraphics[]{Pendulum.jpg}
+	%%\caption{Sketch of the pendulum}
+	%%\label{fig:pendulum}
+	%%\end{figure}
+	
+	
+	\newpage
+	\bibliographystyle{ieeetr}
+	\bibliography{bibliography}
+	
+	
+	
+\end{document}

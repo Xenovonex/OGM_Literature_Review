@@ -1,0 +1,166 @@
+\section{Datasets} \label{sec:datasets}
+
+When researching \gls{OGM} prediction using deep learning networks, it is important to choose a dataset (or multiple datasets) that optimally fulfills the requirements for that purpose. The dataset will be used to train and evaluate the deep learning network on. Not only the performance of deep learning network, but also the time that is required to pre-process, train, and evaluate the network is greatly dependent on what dataset is used. Also, the performance of a network should be compared reliably. Therefore, it is important that a dataset is chosen on which other research has based their network training and evaluation on, so there are enough results for reliable comparisons. To ensure that the optimal dataset is chosen for \gls{OGM} prediction research, the following list of criteria is devised which the dataset has to meet. Based on how the dataset scores on this list, an informed decision can be made. 
+
+
+% Do these criteria have to contain concrete numerical bounds, or is this good? If so, to these concrete numerical bounds have to be based on sources, or can I base them on my own insights?
+\begin{enumerate}
+	\item The dataset contains data of ego-vehicle centered traffic scene sequences that provide at least 2D \gls{BEV} information of the environment.
+	\item The dataset provides enough diverse data to train and evaluate a network on.
+	\item The dataset contains traffic scene sequences, or provides means to easily generate them.
+	\item The sequences have enough frames per sequence and a frame frequency that is suitable for capturing road user behavior and trajectories.
+	\item The sequences contain various traffic actors including \glspl{VRU}.
+	\item The dataset data, and any \gls{OGM} that can be generated from it, provides a resolution that is high enough to distinguish and to track \glspl{VRU}. 	
+	\item The sequences show a diversity in environmental properties, containing \glspl{VRU}, that may influence the generated \glspl{OGM} (e.g. urban vs rural, dense vs sparse traffic).
+	\item If any extended \gls{OGM} form is required for research, the dataset should also provide means to attain data that is required for such an extended form including ground truth data.
+	\item Results of other research using the dataset for generating and predicting \glspl{OGM} is available for comparison. 
+\end{enumerate}
+
+
+% Observation: The only OGM prediction dataset is KITTI, which also does not provide any OGMs and is now relatively small compared to state-of-the-art datasets. There is a lack of good datasets that provide easy means to create OGMs from their data. Maybe thesis topic: Create OGMs from other, bigger, datasets to perform OGM prediction on. Methods that predict OGMs (given OGMs) either use their own dataset which is small, or they use KITTI. Also, Nuscenes is used, but the input is a multi-layer BEV map which does not contain uncertainty information. Then, one paper uses the Waymo Open Dataset which is a large dataset \cite{toyungyernsub2020double}. This paper also generates OGMs from LiDAR data, so the Waymo dataset does not provide a standardized means to generate the OGM self. It is however the most useful dataset for OGM prediction. Also, the OGMs that \cite{toyungyernsub2020double} describes could be extended with segmentation of traffic signs/zebra crossings/other motion cues for VRUs. 
+
+There is a number of existing datasets that are closest to meeting all criteria. Three datasets were obtained for a purpose that includes motion prediction. Five datasets were obtained for object detection purposes. The last two suitable datasets were mainly obtained to research semantic segmentation on. All the datasets are recorded using a vehicle equipped with one or multiple sensors that drives through real traffic. The datasets are discussed below in three subsections based on their original purposes: Motion prediction, Object Detection, and Semantic Segmentation. At the end of this chapter is a conclusion about the datasets.
+
+
+\subsection{Tracking and Motion prediction Datasets}
+The following three datasets are obtained for tracking or motion prediction purposes. The \gls{STIP} dataset \cite{liu2020spatiotemporal}, the Argoverse dataset \cite{chang2019argoverse} and the RoboCar dataset \cite{robotcardatasetijrr}. \\
+
+The \gls{STIP} dataset \cite{liu2020spatiotemporal} is obtained using three cameras (left, front and right) with a 1216x1936 resolution at 20 Hz positioned on the recording vehicle. The data is recorded in dense urban areas in 8 US cities (in California and Michigan). The dataset contains 923.48 minutes of driving scenes, which comes down to 1,108,176 frames. The data contains 350K pedestrian instances annotated with 2D bounding boxes at 2 fps which are interpolated to cover all frames with pedestrians. There are over 25K pedestrian tracks with a median length of 4 seconds, at 20 Hz. 556 sequences are selected in which busy intersection are recorded. These sequences are subdivided into a training set containing 2525 pedestrians in 102.37 minutes of video, and a test set containing 823 pedestrians in 23.43 minutes of video. \\
+
+For the Argoverse dataset \cite{chang2019argoverse} two 107K points LiDARs, with a range of 200m, at 10 Hz together with seven 1920x1200 resolution cameras in a 360 degrees view setting at 30 Hz, with two additional 2056x2464 resolution front cameras at 5 Hz were used to obtain the data. Localization data is obtained from GPS and motion sensors. The data is recorded in 2 US cities (Pittsburgh and Miami). The dataset contains over 320K five-second sequences containing the centroid of each tracked object in 2D \gls{BEV} sampled at 10 Hz. Together these are over 19K minutes containing over 11K tracked road users and obstacles labeled out of 17 categories including vehicles, pedestrians and cyclists. \\
+
+The RoboCar dataset \cite{robotcardatasetijrr} data is collected using three LiDARs with each a range of 50m at 50 Hz, and four cameras (one 1280x960 resolution camera in front at 16 Hz, and three 1024x1024 resolution cameras at 11.1 Hz at the rear and on the sides). A GPS INS combination is used for localization. The data is recorded in Oxford, UK. A 1000 km of traffic scenes are recorded and subdivided into 360s second sequences. Vehicles, pedestrians and other road users are recorded in the dataset, however none are labelled. It is therefore unkown how many pedestrians or vehicles are recorded.
+
+
+\subsection{Object Detection Datasets}
+This subsection will discuss five datasets that were originally obtained for object detection purposes. The \gls{ECP2.5D} dataset \cite{braun2020ecp2}, the \gls{BDD100K} dataset \cite{yu2020bdd100k}, the \gls{KITTI} dataset \cite{geiger2012we}, the nuScenes dataset \cite{caesar2020nuscenes}, and the Waymo Open dataset \cite{sun2020scalability}. \\
+
+The \gls{ECP2.5D} dataset \cite{braun2020ecp2} is obtained using a Velodyne HDL-64E LiDAR, which has a range of 120m and a rotation frequency of 5-20 Hz, and a 1920x1014 resolution front camera at 20 Hz. The localization data is obtained using a GPS INS combination. The recordings were made in 30 different cities in 12 diverse European countries. The dataset contains 136K persons in 46K frames. Together there are 218K pedestrians and 19K riders. More than 140K 2D person annotations are made, of which around 136K have 3D information. \\
+
+The \gls{BDD100K} dataset \cite{yu2020bdd100k} is collected using crowd-sourcing. Drivers could upload their data obtained by using a 1280x720 resolution front camera at 30 Hz together with GPS/IMU localization data. Recordings were mostly made in San Francisco and the Bay Area, New York, and Berkeley. The dataset contains data for object detection, but also for tracking and semantic segmentation, since object detection is not the sole purpose of the \gls{BDD100K} dataset. The dataset contains 100K driving videos, each of a duration of 40 seconds. For all 100K videos, 10 object categories are annotated with 2D bounding boxes and 8 lane marking categories and the vehicle's drivable area are annotated on a pixel-level. Other annotations for object detection and semantic segmentation are done for every 10th second in each video. For those 10K sample frames 40 object classes are annotated on a pixel-level. For the tracking task, 2K 40-second videos containing about 400K frames are annotated at 4 Hz. The dataset contains 130.6K track identities and 3.3M bounding boxes for the training and validation set. There are 129K instances of pedestrians and about 1M vehicles in the dataset. \\
+
+The \gls{KITTI} dataset \cite{geiger2012we} is obtained using a Velodyne HDL-64E LiDAR with a 120m range at 10 Hz and four 1392x512 resolution cameras (two color cameras and two grayscale cameras) at 10 Hz. A GPS/IMU combination is used for localization data. The data is recorded in one city (Karlsruhe, Germany). Besides object detection, this dataset also provides data for stereo vision, optical flow, visual odometry, SLAM, and 3D object tracking tasks. Dynamic objects of 8 different classes, including vehicles and pedestrians, are annotated in the form of 3D bounding box tracklets in the LiDAR pointclouds, which are projected into the camera images. 9400 pedestrians are annotated and 3300 riders. The dataset contains 22 sequences in traffic that together span a distance of 39.2 km and consist of 41K frames at 10 Hz. \\
+
+% KITTI: \cite{geiger2012we} or  \cite{geiger2013vision} ? 
+For the nuScenes dataset \cite{caesar2020nuscenes}, a LiDAR that can generate a 1.4M point 360 degree view at 20 Hz, five radars around the vehicle with a 250m range at 13 Hz, and six 1600x900 resolution cameras around the vehicle at 12 Hz are used to collect data. Also a GPS/IMU and CAN bus data is collected for localization. The dataset is recorded in 2 cities (Boston and Singapore). There is 15 hours of data that together span a total distance of 242 km of diverse driving conditions. The nuScenes dataset is collected for object detection as well as object tracking. Therefore, it contains 1000 sequences of 20 seconds, annotated at 2 Hz. Objects of 23 classes are annotated, including vehicles, pedestrians, and riders. The nuScenes paper \cite{caesar2020nuscenes} compares its dataset against the \gls{KITTI} dataset \cite{geiger2012we}. It concludes that training on the \gls{KITTI} dataset, with its smaller size compared to nuScenes, affects a network's performance. \\
+
+% https://github.com/sisl/Double-Prong-Occupancy waymo to OGM
+The Waymo Open dataset \cite{sun2020scalability} (in short Waymo), is obtained using five LiDAR sensors and five cameras (three 1920x1280 resolution front cameras and two 1920x1040 side cameras) sampled at 10 Hz. The dataset was originally recorded in 3 cities (Phoenix, San Francisco, and Mountain View) and later extended with another 3 cities (Los Angeles, Detroit, and Seattle). Besides object detection, the Waymo dataset's extension focuses on data for motion prediction. It now contains 103K 20 second sequences at 10 Hz (together over 20M frames and 574 hours of data). It contains 10.8M objects with tracking IDs, labels for three object classes (vehicles, pedestrians, and cyclist), and 3D bounding boxes of each of those objects. Each sequences contains 3D map data and is further broken down into 9 second windows (1 second of historic frames and 8 seconds of future frames) with 5 second overlap for motion prediction purposes.  
+
+
+\subsection{Semantic Segmentation Datasets}
+This section discusses two datasets that are originally generated for semantic segementation tasks. The Apolloscape dataset \cite{huang2019apolloscape}  and the Cityscapes dataset \cite{cordts2016cityscapes}. \\
+
+Apolloscape \cite{huang2019apolloscape} is a dataset which is collected for the purpose of scene parsing (semantic segmentation on pixel-level). The data is obtained using two VUX-1HA LiDARs and a VMX0CS6 camera system with two 3384x2710 resolution cameras. Localization data is collected with a IMU/GNSS combination. The dataset contains almost 144K frames with pixel-level annotations for semantic segmentation. Furthermore, 89K instance-level annotations are provided for movable objects. 25 different labels are annotated covering five groups. Also, 28 lane markings are annotated. Together there are 543K pedestrian instances and 1.99M vehicle instances in the dataset. \\
+
+The Cityscapes dataset \cite{cordts2016cityscapes} is obtained using a 1920x1080 resolution stereo camera (OnSemi AR0331) at 17 Hz. 16 bit HDR and 8 bit LDR RGB images are recorded. Localization data is collected with a GPS/odometry sensor combination and the outside temperature is measured as well. The dataset is recorded in 50 different cities, primarily in Germany but also in neighboring countries. From 27 cities, 5000 images are selected for dense pixel-level annotation. Annotations are done on every 20th frame of a 30-frame video sequence. For the remaining 23 cities, coarse annotation is performed on a single image every 20 seconds or 20 meters driving distance (whichever comes first). This yields another 20K annotated images. 30 classes are annotated which are grouped into 8 categories. The dataset contains 24.4K annotated pedestrians and 41K vehicles. Humans and vehicles are also annotated on an instance level. 
+
+\afterpage{%
+	\clearpage% Flush earlier floats (otherwise order might not be correct)
+	\thispagestyle{empty}% empty page style (?)
+	\begin{landscape}
+		\begin{longtable}{m{4em}m{2em}m{7em}m{7em}m{5em}m{2em}m{5em}m{7em}m{4em}m{2em}m{2em}m{5em}m{1em}m{1em}} 
+			\toprule
+			\rotatebox{90}{\textbf{Dataset}} & \rotatebox{90}{\textbf{Year}} & \multicolumn{3}{c}{\rotatebox{90}{\textbf{Sensors}}} & \rotatebox{90}{\textbf{Sampling Frequency}} & \rotatebox{90}{\textbf{Diversity of Locations}} & \rotatebox{90}{\textbf{Dataset size}} & \rotatebox{90}{\textbf{Diversity of labels}} & \rotatebox{90}{\textbf{\# Pedestrians}} & \rotatebox{90}{\textbf{\# Vehicles}} & \rotatebox{90}{\textbf{Extended OGMs}} & \rotatebox{90}{\textbf{OGM generation method}} & \rotatebox{90}{\textbf{OGM prediction comparison}} \endfirsthead 
+			\midrule
+			\textbf{STIP \cite{liu2020spatiotemporal}} & 2020 & - & 3 RGB cameras of res 1216x1936  (20 Hz) & - & 20 Hz & 1 country, 8 cities, dense urban areas & 556 sequences, \textasciitilde{}2h of recording, \textasciitilde{}150K frames & 2 classes (pedestrian, vehicle) & \textasciitilde{}3K & - & - & - & - \\
+			\textbf{Argoverse \cite{chang2019argoverse}} & 2019 & 2 VLP-32 LiDARs with 200m range (10 Hz) & 7 RGB cameras in 360 deg setup of res 1920x1200 (30 Hz) and 2 in stereo view of res  2056x2464 (5 Hz) & GPS/ Odometry sensor & 10 Hz & 1 country, 2 cities, dense urban areas & \textasciitilde{}333K 5s sequences, 1006h of recording, spanning \textasciitilde{}290km & 17 classes & \textasciitilde{}1.5K & \textasciitilde{}8K & - & \cite{roddick2020predicting} & - \\
+			\textbf{ECP2.5D \cite{braun2020ecp2}} & 2020 & Velodyne HDL-64E LiDAR with 120m range (5-20 Hz) & 1 RGB camera of res 1920x1024 (20 Hz) & GPS/INS & - & 12 countries, 31 cities, dense urban areas & \textasciitilde{}46K frames & 7 classes & \textasciitilde{}218K & - & - & - & - \\
+			\textbf{BDDK100 \cite{yu2020bdd100k}} & 2020 & - & 1 camera of res 1280x720 (30 Hz) & GPS/IMU & - & (mostly) 1 country, 4 cities, dense urban areas & \textasciitilde{}100K 40s sequences & 3 categories, 20 classes & \textasciitilde{}129K & \textasciitilde{}1M & Pixel-level semantic segmentation & - & - \\
+			\textbf{KITTI \cite{geiger2012we}} & 2012 & Velodyne HDL-64 LiDAR with 100m range (10 Hz) & 4 cameras (2 color 2 grayscale) of res 1392x512 (10 Hz) & GPS/IMU & 10 Hz & 1 country, 1 city, dense urban areas & 22 sequences & 2 categories, 8 classes & \textasciitilde{}9.4K & \textasciitilde{}100K & - & \cite{itkina2019dynamic} \cite{mohajerin2019multi} \cite{lange2020attention} & \cite{itkina2019dynamic} \cite{mohajerin2019multi} \cite{lange2020attention} \\
+			\textbf{NuScenes \cite{caesar2020nuscenes}} & 2019 & 32 beam LiDAR 1.4M points/s (20 Hz) + 5 Radars with 250m range (13 Hz) & 6 cameras of res 1600x900 cameras (12 Hz) & GPS/IMU, CAN bus data & 2 Hz & 2 countries, 2 cities, dense urban areas & 1000 20s sequences & 23 classes, 8 attributes & \textasciitilde{}200K & \textasciitilde{}500K & velocity information from Radar with 0.1km/h accuracy & \cite{roddick2020predicting} \cite{loukkal2021driving} & - \\
+			\textbf{Waymo \cite{sun2020scalability}} & 2020 & 5 LiDAR sensors (1 mid range, 4 short range) & 5 cameras (3 front of res 1920x1280 and 2 side of res 1920x1014) & - & 10 Hz & 1 country, 3 cities, urban and suburban areas & 103K 20s sequences & 3 classes & \textasciitilde{}2.8M & \textasciitilde{}6.1M & - & \cite{lange2020attention} \cite{toyungyernsub2020double} & \cite{lange2020attention} \cite{toyungyernsub2020double} \\
+			\textbf{Apolloscape \cite{huang2019apolloscape}} & 2018 & 2 VUX-1HA LiDARs with 420m range & 1 VMX-CS6 camera system with 2 cameras of res 3384x2710 (no depth information) & IMU/GNSS & - & 1 country, dense urban areas & - & 5 categories, 35 classes, additional 28 kinds of lane markings & \textasciitilde{}543K & \textasciitilde{}1.99M & Pixel-level semantic segmentation & - & - \\
+			\textbf{Cityscapes \cite{cordts2016cityscapes}} & 2020 & - & 1 stereo camera of res 1920x1080 (OnSemi AR0331) (17 Hz) & GPS, outside temperature, in-vehicle odometry sensors & 17 Hz & 1 country, 50 cities, dense urban areas & A 'large set' of sequences & 8 categories, 30 classes & \textasciitilde{}24.4K & \textasciitilde{}41K & Pixel-level semantic segmentation & \cite{hehn2021fast} & - \\
+			\textbf{RoboCar \cite{robotcardatasetijrr}} & 2016 & 2 SICK LMS-151 2D LiDARs with 50m range (50 Hz) and 1 SICK LD-MRS 3D LiDAR with 50m range (12.5 Hz) & 4 cameras (1 front of res 1280x960 at 16 Hz, 3 for sides and rear of res 1024x1024 at 11.1 Hz) & GPS/INS & - & 1 country, 1 city, urban area & 360s sequences of unknown amount & No labels & - & - & - & \cite{dequaire2018deep} \cite{wang2020l2r} & \cite{dequaire2018deep} \\
+			\bottomrule
+		\caption{This table shows an overview of the datasets that are most likely to be suitable for \gls{OGM} prediction purposes.}
+		\label{tab:datasets_overview}	
+		\end{longtable}	
+	\end{landscape}
+}
+
+%%
+
+\subsection{What dataset is most suitable to generate OGM sequences for OGM prediction?}
+
+Table \ref{tab:datasets_overview} shows an overview of the datasets that are discussed in the previous subsections. Based on the properties of each dataset it is evaluated how well they meet the criteria that were set at the beginning of this chapter. Table \ref{tab:datasets_criteria} shows an overview of how well each datasets scores per criterion. 
+
+\begin{table}[h!]
+	\centering
+	\resizebox{\linewidth}{!}{%
+		\begin{tabular}{lllllllllll} 
+			\toprule
+			& \textbf{STIP \cite{liu2020spatiotemporal}} & \textbf{Argoverse \cite{chang2019argoverse}} & \textbf{ECP2.5D \cite{braun2020ecp2}} & \textbf{BDDK100 \cite{yu2020bdd100k}} & \textbf{KITTI \cite{geiger2012we}} & \textbf{NuScenes \cite{caesar2020nuscenes}} & \textbf{Waymo \cite{sun2020scalability}} & \textbf{Apolloscape \cite{huang2019apolloscape}} & \textbf{Cityscapes \cite{cordts2016cityscapes}} & \textbf{RoboCar \cite{robotcardatasetijrr}} \\ 
+			\hline
+			\textbf{1} & N & Y & Y & N & Y & Y & Y & Y & Y & Y \\
+			\textbf{2} & A & A & A & G & B & A & A & B & G & B \\
+			\textbf{3} & A & G & U & G & B & G & G & U & U & U \\
+			\textbf{4} & G & G & U & U & G & B & G & U & G & G \\
+			\textbf{5} & Y & Y & Y & Y & Y & Y & Y & Y & Y & U \\
+			\textbf{6} & Y & Y & Y & Y & Y & Y & Y & Y & Y & Y \\
+			\textbf{7} & A & A & A & A & A & A & G & A & A & A \\
+			\textbf{8} & - & - & - & Pixel Semantics & - & Velocity data & - & Pixel Semantics & Pixel Semantics & - \\
+			\textbf{9} & - & Only OGM gen & - & - & OGM gen and pred & Only OGM gen & OGM gen and pred & - & Only OGM gen & OGM gen and pred \\
+			\textbf{Scores} & 4.5 & \textbf{6.5} & 4.0 & 5.5 & 5.5 & \textbf{6.5} & \textbf{7.5} & 4.5 & \textbf{7.0} & 4.5 \\
+			\bottomrule
+		\end{tabular}
+	}
+	\caption{
+		The table shows for each dataset how well it scores per criterion. The scores are based on the information in table \ref{tab:datasets_overview}. The following letters are used to evaluate each criterion: 
+		\textbf{G:} Good, \textbf{A:} Average, \textbf{B:} Bad, \textbf{U:} Unknown: \textbf{-:} None/Not available/Not found, \textbf{Y:} Yes, \textbf{N:} No. \\\hspace{\textwidth} 
+		At the bottom row, each dataset is given a score based on which letter is given at the evaluation, and whether there is useful information found for criteria 8 and 9. A 'G', a 'Y', 'OGM gen and pred', and any available additional data for an extended OGM form provide 1 point, an 'A' and 'only OGM gen' provides 0.5 points, and the 'N', 'B', 'U', and '-' provide 0 points.  
+		Below is the list of criteria. \\\hspace{\textwidth} 	
+		\textbf{1.} The dataset contains data of ego-vehicle centered traffic scene sequences that provide at least 2D BEV information of the environment.
+		\textbf{2.} The dataset provides enough diverse data to train and evaluate a network on.
+		\textbf{3.} The dataset contains traffic scene sequences, or provides means to easily generate them.
+		\textbf{4.} The sequences have enough frames per sequence and a frame frequency that is suitable for capturing road user behavior and trajectories.
+		\textbf{5.} The sequences contain various traffic actors including VRU.
+		\textbf{6.} The dataset data, and any OGM that can be generated from it, provides a resolution that is high enough to distinguish and to track VRU. 
+		\textbf{7.} The sequences show a diversity in environmental properties, containing VRU, that may influence the generated OGM (e.g. urban vs rural, dense vs sparse traffic).
+		\textbf{8.} If any extended OGM form is required for research, the dataset should also provide means to attain data that is required for such an extended form including ground truth data.
+		\textbf{9.} Results of other research using the dataset for generating and predicting OGM is available for comparison.}
+	\label{tab:datasets_criteria}
+\end{table}
+
+\newpage
+
+\section{Metrics} \label{sec:metrics}
+
+The quantitative evaluation of \gls{OGM} prediction methods depends highly on what metric is used to assess a method's performance. The metric determines which errors are considered and how much they weigh in the evaluation. For \gls{OGM} prediction, it is important that the predictions that ensure safe motion planning for the \gls{AV} are evaluated as 'better', than predictions that might cause accidents. Ensuring safe motion planning means that no (additional) dangerous situations are caused when the \gls{AV} executes a path that is planned in the \gls{OGM} predictions, compared to a path that is planned in the ground truth \gls{OGM}. This means that a prediction must deviate minimally from the ground truth. Also, \glspl{AV} have less time to correct their paths when there are large deviations or deviations close to the \gls{AV}. Large displacements and errors close to the \gls{AV} should therefore be considered worse than small displacements and errors further from the \gls{AV}. Moreover, if there are deletions or additions of actors in the predictions, the \gls{AV} might perform dangerous confronting or evasive maneuvers respectively. Therefore, deletions and additions should be penalized more than displacements. These demands result in the following list of criteria that a metric must meet in order to evaluate an \gls{OGM} method that ensures that safer methods are considered better.  
+
+\begin{enumerate}
+	\item The metric can evaluate the \gls{OGM} as a whole.
+	\item The metric can evaluate the \gls{OGM} on local and on global scale.
+	\item The metric negatively weighs small displacements less than big displacements. 
+	\item The metric negatively weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.
+	\item The metric negatively weighs additions and deletions more than displacements.
+\end{enumerate}
+
+
+\subsection{Occupancy Grid Map Metrics}
+
+Mean Squared Error: \cite{lange2020attention}, \cite{itkina2019dynamic}, \cite{toyungyernsub2020double}
+
+Image Similarity: \cite{lange2020attention}, \cite{toyungyernsub2020double}, \cite{birk2006merging}
+
+TP, TN, SSIM/S100: \cite{mohajerin2019multi}
+
+F1 measure: \cite{dequaire2018deep}, \cite{schreiber2019long}
+
+FPR, TPR (ROC-curve): \cite{hoermann2018dynamic}, \cite{schreiber2019long} \\
+
+Motion planning metric: Plan a (or multiple) paths in GT, plan a (or multiple) paths in the prediction. THe more similar the paths are, the better the OGM prediction is?
+
+Experiment: 
+Test each metric on a couple of images in which each of the criteria is tested. 
+
+TABLE:
+Metric INFO
+
+
+
+\subsection{What is the best metric to determine the quantitative accuracy of a predicted OGM?}
+
+
+% Also a part about loss functions? See Hoerman2020 Loss Functions

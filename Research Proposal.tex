@@ -1,0 +1,35 @@
+\section{Research Proposal} \label{sec:res_prop}
+Comparing the accuracy of future Occupancy Grid Map predictions with future state predictions focussed on VRUs provided with the ECP dataset.
+\\
+
+\subsection{Why VRU behavior?}
+VRU behavior prediction is more challenging that predicting vehicle behavior due to the sudden and swift trajectory changes that VRUs can make. Additionally, VRUs are vulnerable, so VRU safety is more important than vehicle safety. \\
+
+What output representation (OGM or states) will provide more accurate results for VRU path prediction? \\
+
+\textbf{Experiment:} Predict future behavior of VRUs with both output representations and compare the results
+
+\subsection{Why embed environmental cues in a grid map representation?}
+Why could using grid maps improve the accuracy of the predictions? (static environment is incorporated, semantic segmentation of static env possible, ...) \\
+
+\textbf{Experiment:} Compare using grid map representation with a state representation (e.g. just coordinates). This requires a metric that can be used to compare those representations or a way to translate on representation to the other and then compare it with the same metric. \\
+
+OR \\
+
+\textbf{Experiment:} Investigate the benefits of extended OGM forms. Compare the prediction results of a plain OGM input with a semantic OGM input. Compare the results of both the OGM output representation and the state output representation. \\
+
+\subsection{What method performs better with missing data?}
+\textbf{Experiment:} Compare the OGM output representation accuracy with the state output accuracy when there is missing input data (empty OGMs). Also, compare the difference in the OGM ouput accuracy with and without missing data. Do the same for the state output representation. See if one of the two methods is robuster (lower decrease in accuracy with missing data).
+
+\subsection{What method performs better with sensor fusion input/input from multiple sensors?}
+
+\subsection{Why the ECP dataset?}
+It is large and diverse. \\
+
+It has LiDAR and camera data that can be aligned to form a 3D pointcloud with semantic segmented labelling to create a BEV map of the environment. \\
+
+A subset of the ECP dataset is made which contains tracks for motion prediction purposes. \\
+
+\textbf{Experiment:} Use the ECP dataset to perform the experiments on.
+
+
