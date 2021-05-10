@@ -1,5 +1,7 @@
 \section{Prediction Methods using Occupancy Grid Maps} \label{sec:ogm_methods}
 
+This chapter gives an overview of current motion prediction methods that utilize \glspl{OGM} as prior information for the predictions. A distinction is made between \gls{OGM} prediction methods and state prediction methods. The former are methods that predict the entire future environment in \gls{OGM} form (as described in the problem description in chapter \ref{sec:intro}). The latter are methods that predict either future centroids or future actor representations. Both methods do take \glspl{OGM} as input data. All described methods are deep learning based. First, four \gls{OGM} prediction methods are described, then two state prediction methods are described, followed by the answer to the final sub-question of this literature study: \textit{"What method generates the best \gls{OGM} predictions?"}
+
 \subsection{Occupancy Grid Map Prediction Methods} 
 
 %% PredNet progress
@@ -59,4 +61,4 @@ Luo \cite{luo2018fast} proposes a real-time end-to-end 3D detection, tracking an
 %% Methods that use a single OGM as contextual information beside past trajectories
 
 
-\subsection{What method provides the best OGM predictions?}
+\subsection{What method generates the best OGM predictions?}
