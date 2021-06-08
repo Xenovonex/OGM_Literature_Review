@@ -37,146 +37,12 @@ Based on the investigated literature, the future states can be represented as on
 	\label{fig:pred_froms}
 \end{figure}
 
-Finally, the problem statement mentions a time horizon, that the predictions must be within a certain accuracy and certainty, and that it needs to be executed within a specific time limit. The time horizon is the amount of time into the future that the prediction must span. Ideally, the time horizon, the accuracy, the certainty, and the execution time of the predictions should be infinitely, exact, complete, and instantaneously respectively. However, this is not possible in practice. Therefore, I think a suitable prediction method should perform further into the future, more accurate, with more certainty, and faster than a human can perform the task. Within the context of \glspl{AV}, this is a reasonable requirement in order for the \gls{AV} to be able to perform safer than humans can.   
-
-% Include a part to introduce the next section (current solutions.)
-
-% For the next subsection, how to write look at when I write about solutions and when I refer to challenges. This could be confuding. 
-
-
-\begin{table}[h!]
-	\centering
-	\resizebox{\linewidth}{!}{%
-		\begin{tabular}{lllllllll} 
-			\toprule
-			\textbf{Source} & \textbf{Year} & \textbf{Goal Type} & \textbf{Observer} & \textbf{Actors} & \textbf{Method} & \textbf{Cue type} & \textbf{Environment representation} & \textbf{Future Work} \\ 
-			\midrule
-			\cite{ziebart2009planning} & 2009 & TP & SO & Ps & MDP & APS & DOGMa & ISC, MISC \\
-			\cite{keller2013will} & 2013 & TP, MM & DO & Ps & GPDM, PHTM, KF, IMM KF & SI & GPCS & ED, MISC \\
-			\cite{schneider2013pedestrian} & 2013 & TP & DO & Ps & EKF, IMM & APS & GPCS &  \\
-			\cite{kooij2014context} & 2014 & TP, ISC & DO & Ps & DBN, SLDS & APS, Other & 3DWC & IEC, MISC \\
-			\cite{quintero2014pedestrian} & 2014 & TP, MM & SO & Ps & GPDM, PHTM, KF, IMM KF & Other & 3DWC & ED \\
-			\cite{park2015simulation} & 2015 & TP & DO & Vs & RRT+GMM & APS, CMI & GPCS+Image &  \\
-			\cite{trautman2015robot} & 2015 & TP, ISC & SO & Ps & GP & APS & GPCS &  \\
-			\cite{alahi2016social} & 2016 & TP, ISC & SO & Ps & Social-LSTM & APS & GPCS & ED, IEC \\
-			\cite{huang2016deep} & 2016 & TP, DL & SO & Ps & CNN & SI, ACS, Other & Image &  \\
-			\cite{chen2016augmented} & 2016 & TP & SO & RUs & ASNSC & APS & GPCS, Raster-GPCS & MISC \\
-			\cite{kim2017probabilistic} & 2017 & TP, DL & DO & Vs & LSTM & APS & OGM &  \\
-			\cite{pool2017using} & 2017 & TP, IEC, MM & DO & Cs & LDS & APS, RT & GPCS & IEC \\
-			\cite{varshneya2017human} & 2017 & TP, IEC, DL & SO & Ps & SSCN, CNN & CL, SI & GPCS+Image & ED \\
-			\cite{lee2017desire} & 2017 & TP, ISC, IEC & DO & Rus & IOC RNN & APS, CL, Other & GPCS & ED \\
-			\cite{dequaire2018deep} & 2018 & TP, ISC, IEC, E2E, DL, UA & DO, SO & RUs & RNN & OGM & DOGMa & ED \\
-			\cite{djuric2018motionpred} & 2018 & TP, DL & DO & Vs & CNN, FC, LSTM & SI & Raster-Image &  \\
-			\cite{becker2018evaluation} & 2018 & TP & SO & Ps & MLP, RNN, TCN & APS & GPCS & ISC \\
-			\cite{park2018sequence} & 2018 & TP, DL & DO & Vs & LSTM & APS, SI, Other & Raster-Image &  \\
-			\cite{deo2018convolutional} & 2018 & TP, ISC, DL & SO & Vs & LSTM & APS & GPCS & IEC \\
-			\cite{habibi2018context} & 2018 & TP, IEC & SO & Ps & ASNSC & APS, Other & GPCS, Raster-GPCS & ISC, IEC \\
-			\cite{gupta2018social} & 2018 & TP, ISC, DL & SO & Ps & RNN, GAN & APS & GPCS &  \\
-			\cite{pfeiffer2018data} & 2018 & TP, ISC, IEC & SO & Ps & CNN, LSTM & APS, OGM & GPCS & MISC \\
-			\cite{manh2018scene} & 2018 & TP, ISC, IEC, DL & SO & Ps & LSTM & SI & GPCS+Image & ED, ISC \\
-			\cite{nikhil2018convolutional} & 2018 & TP, DL & SO & Ps & CNN & APS & GPCS & ISC, MISC \\
-			\cite{radwan2018multimodal} & 2018 & TP, MM, ISC & SO & Ps & CNN & APS, TL & GPCS+Image & IEC, MISC \\
-			\cite{luo2018fast} & 2018 & TP, ISC, IEC, E2E, DL & DO & Vs & CNN-Transformer & Other & GPCS, 3D-OGM & ED, IEC \\
-			\cite{rehder2018pedestrian} & 2018 & TP, MM, E2E, DL & DO & Ps & ANN, LSTM & SI, ACS & GPCS & ED, IEC, MISC \\
-			\cite{hoermann2018dynamic} & 2018 & TP, ISC, IEC, E2E, DL, MM, UA & DO & RUs & CNN & OGM & OGM & MISC \\
-			\cite{cui2019multimodal} & 2019 & TP, MM, DL, UA & DO & RUs & CNN & ACS, SI & DOGMa &  \\
-			\cite{huang2019uncertainty} & 2019 & TP, UA, MM & DO & Vs & VGG-FC, GMM & APS, SI, Other & GPCS &  \\
-			\cite{tang2019multiple} & 2019 & TP, MM & DO & Vs & RNN, CNN & APS, SI & GPCS & ED \\
-			\cite{ma2019trafficpredict} & 2019 & TP, ISC, DL & DO & RUs & LSTM & APS, SI & GPCS & ED, IEC \\
-			\cite{sadeghian2019sophie} & 2019 & TP, ISC, IEC, DL & SO & Ps & LSTM, GAN & APS, SI & GPCS+Image &  \\
-			\cite{chandra2019traphic} & 2019 & TP & DO, SO & RUs & LSTM-CNN & APS, Other & 3DWC & MISC \\
-			\cite{xiong2019recurrent} & 2019 & TP, DL & DO & VRUs & RNN, LSTM, GRU & APS, CL, ACS, Other & Images &  \\
-			\cite{saleh2019contextual} & 2019 & TP, DL & SO & VRUs & B-LSTM, IRL & APS, SI & GPCS+Image & IEC, ISC \\
-			\cite{itkina2019dynamic} & 2019 & TP, ISC, IEC, E2E, DL, UA & DO & RUs & CNN, LSTM & OGM & OGM & ED, MISC \\
-			\cite{schreiber2019long} & 2019 & TP, ISC, IEC, E2E, DL, MM, UA & DO & RUs & CNN, LSTM & OGM & OGM & MISC \\
-			\cite{mohajerin2019multi} & 2019 & TP, ISC, IEC, E2E, DL, UA & DO & RUs & CNN, LSTM & OGM & OGM & ED, MISC \\
-			\cite{hormann2020long} & 2020 & TP, ISC, IEC, E2E, DL, MM, UA & DO & RUs & CNN & OGM & DOGMa & ISC \\
-			\cite{djuric2020uncertainty} & 2020 & TP, UA & DO & Vs & CNN, FC, LSTM & SI & Raster-Image &  \\
-			\cite{das2020accurate} & 2020 & TP, DL & SO & Ps & GRU, LSTM & APS & GPCS &  \\
-			\cite{li2020end} & 2020 & TP, ISC, IEC, E2E, DL,UA & DO & Vs & RNN-Transformer & RT, OGM, SI, ACS & DOGMa & ED, ISC \\
-			\cite{chou2020predicting} & 2020 & TP, DL & DO & VRUs & CNN & SI, APS, RT, TL & Raster-Image &  \\
-			\cite{brito2020social} & 2020 & TP, MM, ISC & SO & Ps & Social-VRNN, LSTM, CNN & APS, OGM & GPCS+Image, DOGMa & MISC \\
-			\cite{lange2020attention} & 2020 & TP, ISC, IEC, E2E, DL, UA & DO & RUs & CNN, LSTM & OGM & OGM & MISC \\
-			\cite{toyungyernsub2020double} & 2020 & TP, ISC, IEC, E2E, DL, UA & DO & RUs & CNN, LSTM & OGM & OGM & MISC \\
-			\cite{wu2020motionnet} & 2020 & TP, ISC, IEC, E2E, DL & DO & RUs & CNN & OGM & DOGMa &  \\
-			\bottomrule
-		\end{tabular}
-	}
-	\caption{This table shows an overview of recent literature that does research on a form of motion prediction regarding trajectories of various road users. Abbreviations are used to make the table clear to understand. The abbreviations are listed below per column category. \\\hspace{\textwidth} \\\hspace{\textwidth}
-		\textbf{Goal Type:} 
-		Multi-Modal (MM),
-		Trajectory Prediction (TP),
-		Real-time (RT),
-		End-to-end (E2E),
-		Using Deep Learning Methods (DL),
-		Incorporate Social Cues (ISC),
-		Incorporate Environmental Cues (IEC),
-		Uncertainty-Aware (UA). \\\hspace{\textwidth} 
-		\textbf{Observers:}
-		Dynamic Observer (DO),
-		Static Observer (SO). \\\hspace{\textwidth} 
-		\textbf{Actors:}
-		Road Users (RUs),
-		Vulnerable Road Users (VRUs),
-		Pedestrians (Ps),
-		Cyclists (Cs),
-		Vehicles (Vs). \\\hspace{\textwidth} 
-		\textbf{Methods:} 
-		Markov Decision Process (MDP),
-		Gaussian Process Dynamical Models (GPDM),
-		Probabilistic Hierarchical Trajectory Matching  (PHTM),
-		Kalman Filter (KF),
-		Interacting Multiple Model Kalman Filter (IMM KF),
-		Extended Kalman Filter (EKF),
-		Rapid Random Tree Search (RRT+),
-		Gaussian Mixture Model (GMM),
-		Gaussian Process (GP),
-		Gaussian Process Dynamical Model (GPDM),
-		Long Short-Term Memory (LSTM),
-		Convolutional Neural Network (CNN),
-		Augmented Semi Nonnegative Sparse Coding (ASNSC),
-		Linear Dynamical System (LDS),
-		Spatially Static Context Network (SSCN),
-		Inverse Optimal Control (IOC),
-		Recurrent Neural Network (RNN),
-		Fully Connected Layer(s) (FC),
-		Multi-Layer Perceptron (MLP),
-		Temporal Convolutional Network (TCN),
-		Generative Adversarial Network (GAN),
-		Articifial Neural Network (ANN),
-		Visual Geometry Group Neural Network (VGG),
-		Inverse Reinforcement Learning (IRL). \\\hspace{\textwidth} 
-		\textbf{Cue Types:}
-		Actor Current State (ACS),
-		Occupancy Grid Map (OGM),
-		Scene Image (SI),
-		Road topology (RT),
-		Actor Past States (APS),
-		Cost Map Image (CMI),
-		Class labels (CL),
-		Traffic Lights (TL),
-		Other. \\\hspace{\textwidth} 
-		\textbf{Environment Representation:}
-		Occupancy Grid Map (OGM),
-		Dynamic OGM (DOGMa),
-		3D OGM (3D-OGM),
-		Camera (RGB)-Image (Image),
-		Rasterized scene (Raster)
-		Ground Plane Coordinate System (GPCS),
-		3D World Coordinates (3DWC). \\\hspace{\textwidth} 
-		\textbf{Future work:}
-		Incorporate Environmental Cues (IEC),
-		Incorporate Social Cues (ISC),
-		Expand Data (ED),
-		Miscellaneous (MISC).}
-	\label{tab:overview_mot_pred}
-\end{table}
-
+Finally, the problem statement mentions a time horizon, that the predictions must be within a certain accuracy and certainty, and that it needs to be executed within a specific time limit. The time horizon is the amount of time into the future that the prediction must span. Ideally, the time horizon, the accuracy, the certainty, and the execution time of the predictions should be infinite, exact, complete, and instantaneous, respectively. However, this is not possible in practice. Therefore, I think a suitable prediction method should predict further into the future, be more accurate, have more certainty, and be faster than a human can perform the task. Within the context of \glspl{AV}, this is a reasonable requirement in order for the \gls{AV} to be able to perform safer than humans can.   
 
 
 \subsection{Current Solutions}
 
-Table \ref{tab:overview_mot_pred} shows an overview of recent motion prediction papers and their respective methods. It is notable that most methods use a form of deep learning to predict trajectories in any of the forms as described in the problem description. What is also striking, is that relatively few papers have performed research which includes \glspl{VRU} in which the observer is dynamic (from a vehicle's point of view). Still, it is important that \gls{VRU} behavior prediction is investigated. \gls{VRU} collisions are likely to be fatal which makes accurate and early motion prediction necessary in order to respond safely to their actions \cite{rehder2018pedestrian}, \cite{chou2020predicting}, \cite{uah2020d4}. Therefore, \gls{VRU} behaviour prediction is a relevant research topic regarding \glspl{AV}.\\
+Table \ref{tab:overview_mot_pred} in Appendix \ref{app:appendixA} shows an overview of recent motion prediction papers and their respective methods. It is notable that most methods use a form of deep learning to predict trajectories in any of the forms as described in the problem description. What is also striking, is that relatively few papers have performed research which includes \glspl{VRU} in which the observer is dynamic (from a vehicle's point of view). Still, it is important that \gls{VRU} behavior prediction is investigated. \gls{VRU} collisions are likely to be fatal which makes accurate and early motion prediction necessary in order to respond safely to their actions \cite{rehder2018pedestrian}, \cite{chou2020predicting}, \cite{uah2020d4}. Therefore, \gls{VRU} behaviour prediction is a relevant research topic regarding \glspl{AV}.\\
 A major challenge in this research area is to predict \gls{VRU} motion for the long term. However, research on this topic faces a multitude of challenges. Accurate long-term predictions require the incorporation of environmental and social context. Moreover, implementing uncertainty and multimodality of the predictions and making the predictions fast enough for real-time applications in \glspl{AV} are also challenges that need to be solved. These major challenges and recent research to find solutions are described in the following subsections. 
 
 \subsubsection{Long-term motion prediction}
@@ -218,7 +84,7 @@ This question will answered using the answers of the following sub-questions:
 	\item What dataset is most suitable to generate OGM sequences for OGM prediction?
 	\item What is the best metric to determine the quantitative accuracy of a predicted OGM?
 	\item What Deep Learning network is best to use for OGM prediction?
-	\item What method provides the best OGM predictions?
+	\item What method generates the best OGM predictions?
 \end{enumerate}
 
 
