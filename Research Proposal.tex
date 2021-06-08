@@ -1,35 +1,58 @@
 \section{Research Proposal} \label{sec:res_prop}
-Comparing the accuracy of future Occupancy Grid Map predictions with future state predictions focussed on VRUs provided with the ECP dataset.
-\\
+Based on the conclusions of the literature study, the following research plan is proposed. First, a title is presented in section \ref{subsec:rp_title}. Then, some background knowledge describing the research problem is described in section \ref{subsec:rp_background}. Subsequently, the research questions are proposed in section \ref{subsec:rp_questions}. After that, the methodology is explained in section \ref{subsec:rp_methodology}. This is followed by a planning in section\ref{subsec:rp_planning} to execute the proposed research. 
 
-\subsection{Why VRU behavior?}
-VRU behavior prediction is more challenging that predicting vehicle behavior due to the sudden and swift trajectory changes that VRUs can make. Additionally, VRUs are vulnerable, so VRU safety is more important than vehicle safety. \\
+\subsection{Title} \label{subsec:rp_title}
+Investigating the effect of loss functions on \glsfirst{OGM} prediction methods.
 
-What output representation (OGM or states) will provide more accurate results for VRU path prediction? \\
+\subsection{Background} \label{subsec:rp_background}
+Like metrics, loss functions assess the quality of a network's performance. A loss function is used to train network, while a metric is used to evaluate a trained network. Loss functions compute the error between a network's output and the ground truth and back-propagate it to update the network's weights. This is how a network is trained. A metric and a loss function share the same purpose, except that a loss function should be differentiable so its derivative can be determined for back-propagation. Therefore, it makes sense that a loss function is tested against the same criteria as a metric to determine its ability to evaluate a specific task. In this case the task is to compare \glspl{OGM}. In the literature study, the loss functions that were used in the different \gls{OGM} prediction methods were evaluated against the criteria that were set for the metrics. The literature study discovered that most \gls{OGM} prediction methods using deep learning networks are trained using a loss function that does not consider grid cell dependencies. These loss functions only meet one of the five criteria (see chapter \ref{subsec:lossfunc}). One loss function, which meets all five criteria, considers grid cell dependencies in its loss function. \\
 
-\textbf{Experiment:} Predict future behavior of VRUs with both output representations and compare the results
+From this background, a problem arises. Several deep learning networks that are trained to predict \glspl{OGM}, use different loss function that score differently when evaluating them against the metric criteria. This raises the question whether using loss functions that consider grid cell dependencies when evaluating \glspl{OGM} result in better performing networks compared to using loss functions that evaluate each grid cell independently. Additionally, if said case occurs, would the magnitude of improvement of the network's performance be consistent in multiple networks? This results in the following main research questions and two sub-questions in the next section. 
 
-\subsection{Why embed environmental cues in a grid map representation?}
-Why could using grid maps improve the accuracy of the predictions? (static environment is incorporated, semantic segmentation of static env possible, ...) \\
+\subsection{Research Questions} \label{subsec:rp_questions}
+The main question for this research proposal results from the background and problem statement and is as follows: \\ \\
+\textit{What is the effect of different loss functions in Deep Learning methods for \glsfirst{OGM} prediction of traffic scenes?} \\
 
-\textbf{Experiment:} Compare using grid map representation with a state representation (e.g. just coordinates). This requires a metric that can be used to compare those representations or a way to translate on representation to the other and then compare it with the same metric. \\
+This main question can be answer by investigating the answer to the following two sub-questions:
 
-OR \\
+\begin{enumerate}
+	\item \textit{Does using a loss function that considers grid cell dependencies when evaluating \glspl{OGM} when training a network improve its results compared to using a loss function that evaluates each grid cell independently?}
+	\item \textit{Is the effect of different loss functions consistent when they are used to train different deep learning networks?}
+\end{enumerate}
 
-\textbf{Experiment:} Investigate the benefits of extended OGM forms. Compare the prediction results of a plain OGM input with a semantic OGM input. Compare the results of both the OGM output representation and the state output representation. \\
+To answer the questions a methodology is described in the following section.
 
-\subsection{What method performs better with missing data?}
-\textbf{Experiment:} Compare the OGM output representation accuracy with the state output accuracy when there is missing input data (empty OGMs). Also, compare the difference in the OGM ouput accuracy with and without missing data. Do the same for the state output representation. See if one of the two methods is robuster (lower decrease in accuracy with missing data).
+\subsection{Methodology}  \label{subsec:rp_methodology}
+To answer the research questions, multiple deep learning networks have to be trained, using various loss functions, to perform \gls{OGM} predictions. As described in the literature study, to perform \gls{OGM} predictions several components are required. A \glspl{OGM} generation method is required, a dataset that contains suitable data for \gls{OGM} generation and prediction should be chosen, the various loss functions must be chosen to train the networks, the networks that predict the \glspl{OGM} should be chosen, and metrics to evaluate and compare the network's results are required. Finally, experiments can be done to answer the research questions. The choices for the components are discussed in the following subsections. 
 
-\subsection{What method performs better with sensor fusion input/input from multiple sensors?}
+\subsubsection{\gls{OGM} generation method} 
+The \glspl{OGM} will be generated using the \gls{DST} method. The literature study shows that this method is the most suitable one to use for \gls{OGM} prediction. Moreover, this method has been used before by the PredNet-based \gls{OGM} prediction methods, which gives a practical reason to use it together with one of those methods.  
 
-\subsection{Why the ECP dataset?}
-It is large and diverse. \\
+\subsubsection{Dataset} 
+The Waymo \cite{sun2020scalability} dataset will be used because the literature study shows it is the best dataset for \gls{OGM} prediction. Furthermore, no dynamic or semantic information is required for this research, therefore the second and third best datasets are not considered. 
 
-It has LiDAR and camera data that can be aligned to form a 3D pointcloud with semantic segmented labelling to create a BEV map of the environment. \\
+\subsubsection{Loss Functions}
+The \gls{MSE} and L1-loss are used as loss functions that evaluate each grid cell independently. These loss functions are already used in most \gls{OGM} prediction methods (see table \ref{tab:method_overview}), therefore those loss function have been proven to provide acceptable training results. The \gls{SSIM} and \gls{IS} are chosen as loss functions that consider dependencies between grid cells. Both functions are differentiable. Table \ref{tab:metrics} shows that these functions meet al criteria set for metrics. It is therefore expected they also function well as loss functions. Furthermore, the \gls{SSIM} is used as loss function by \cite{mohajerin2019multi}, which proves that this loss function provides acceptable training results.
 
-A subset of the ECP dataset is made which contains tracks for motion prediction purposes. \\
+\subsubsection{Deep Learning Network Architecture} 
+First, Lange's \cite{lange2020attention} \gls{AAConvLSTM} network architecture will be used since it scored highest compared to the other PredNet methods on the Waymo \cite{sun2020scalability} dataset (see table \ref{tab:method_results}). Moreover, the code for Lange's \cite{lange2020attention} network is available online. Also, the \gls{DST} method is chosen to generate the \glspl{OGM}, which Lange also uses in their research. This will make it easier to fit the \gls{OGM}'s format to Lange's architecture. Lange's network originally uses a L1-loss for training. 
+Second, Mohajerin's \cite{mohajerin2019multi} network architecture will be used to compare whether the effects of different loss functions are consistent between different network architectures. Mohajerin \cite{mohajerin2019multi} originally uses the \gls{SSIM} as a loss function in its network.
 
-\textbf{Experiment:} Use the ECP dataset to perform the experiments on.
+\subsubsection{Metrics} 
+The \gls{MSE}, \gls{IS}, and \gls{SSIM} are used as metrics to evaluate the results of the predictions. The \gls{MSE} is chosen because it has been used most often by the other methods (see table \ref{tab:method_overview}). The \gls{IS} and \gls{SSIM} are chosen because they both met all metrics criteria (see table \ref{tab:metrics}). 
+
+\subsubsection{Experiments}
+First, the Waymo \cite{sun2020scalability} dataset is used to generate \gls{OGM} sequences using the \gls{DST} method. Second, the deep learning networks are adjusted, if necessary, to fit the \gls{OGM} sequence format as input. Third, each network is trained multiple times on the Waymo \cite{sun2020scalability} dataset. Each time a different loss function is chosen to train the network. Fourth, the results of each trained network's predictions are compared using the chosen metrics. Based on these comparisons, the research questions can be answered. 
+
+\subsection{Planning} \label{subsec:rp_planning}
+This planning gives a monthly overview about when this research proposal will be executed. 
+
+\paragraph{June} Analysis of the Waymo \cite{sun2020scalability} dataset.
+\paragraph{July} Generation of \gls{OGM} sequences from the dataset.
+\paragraph{August} Preparation the deep learning networks for training.
+\paragraph{September} Training the deep learning networks.
+\paragraph{October} Analysis of the results and writing thesis. 
+\paragraph{November} Writing thesis.
+\paragraph{December} Graduation.
 
 

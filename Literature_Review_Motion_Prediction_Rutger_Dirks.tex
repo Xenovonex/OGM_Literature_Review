@@ -23,9 +23,12 @@
 
 %% Useful packages
 \usepackage{amsmath}
-\usepackage{graphicx}
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tablefootnote}
 \usepackage[colorinlistoftodos]{todonotes}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{sectsty}
@@ -43,8 +46,15 @@
 \usepackage{pgfplots}
 
 
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
 \usepackage[acronym]{glossaries}
 \makenoidxglossaries
+
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+\glsdisablehyper
 \newacronym[plural=AVs]{AV}{AV}{Autonomous Vehicle}
 \newacronym[plural=VRUs]{VRU}{VRU}{Vulnerable Road User}
 \newacronym[plural=OGMs]{OGM}{OGM}{Occupancy Grid Map}
@@ -58,13 +68,27 @@
 \newacronym{BDD100K}{BDD100K}{Berkely DeepDrive 100K}
 \newacronym{KITTI}{KITTI}{Karlsruhe Institute of Technology and Toyota Technological Institute}
 \newacronym{MSE}{MSE}{Mean Squared Error}
+\newacronym{MeSE}{MeSE}{Median Squared Error}
 \newacronym{SSIM}{SSIM}{Structural Similarity Index Measure}
 \newacronym{IS}{IS}{Image Similarity}
 \newacronym{TPR}{TPR}{True Positive Rate}
+\newacronym{TNR}{TNR}{True Negative Rate}
 \newacronym{FPR}{FPR}{False Positive Rate}
 \newacronym{PPV}{PPV}{Positive Predictive Value}
 \newacronym{ROC}{ROC}{Receiver Operating Characteristic}
+\newacronym{ConvLSTM}{ConvLSTM}{Convolutional Long Short-Term Memory}
+\newacronym{CNN}{CNN}{Convolutional Neural Network}
+\newacronym{RNN}{RNN}{Recurrent Neural Network}
+\newacronym{LSTM}{LSTM}{Long Short-Term Memory}
+\newacronym{DOGMa}{DOGMa}{Dynamic Occupancy Grid Map}
+\newacronym{AAConvLSTM}{AAConvLSTM}{Attention Augmented \gls{ConvLSTM}}
+\newacronym{GRU}{GRU}{Gated Recurrent Unit}
+\newacronym{STM}{STM}{Spatial Transformer}
+\newacronym{MFE}{MFE}{Motion-Flow Extraction}
+\newacronym{STC}{STC}{Spatio-Temporal Convolution}
 
+
+\newcommand{\airquote}[1]{``#1''}
 
 \usepackage{booktabs}
 \newenvironment{conditions}
@@ -89,13 +113,19 @@
 
 		\maketitle{}
 		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.6\linewidth]{Figures/Title_Page_OGM}
+			\label{fig:title_page}
+		\end{figure}
+		
 		\begin{center}
 			% Department
-			\textsc{3mE Department of Cognitive Robotics}\\[1cm]
+			\textsc{3mE Department of Cognitive Robotics - Intelligent Vehicles}\\[1cm]
 			% University
 			\textsc{\LARGE Delft University of Technology}\\[1cm]
 			%Supervisors
-			\textsc{Supervisors: Ewoud Pool and Dariu Gavrila}\\[5cm]
+			\textsc{Supervisors: Ewoud Pool, Hidde Boekema, and Dariu Gavrila}\\[5cm]
 		\end{center}
 
 
@@ -115,8 +145,8 @@
 	\newpage
 	\input{Datasets and Metrics}
 	\newpage
-	\input{Sequential input Deep Learning Networks}
-	\newpage
+	%\input{Sequential input Deep Learning Networks}
+	%\newpage
 	\input{Occupancy Grid Map Prediction Methods}
 	\newpage
 	\input{Conclusion}
