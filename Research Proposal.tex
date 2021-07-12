@@ -13,7 +13,7 @@ From this background, a problem arises. Several deep learning networks that are 
 The main question for this research proposal results from the background and problem statement and is as follows: \\ \\
 \textit{What is the effect of different loss functions in Deep Learning methods for \glsfirst{OGM} prediction of traffic scenes?} \\
 
-This main question can be answer by investigating the answer to the following two sub-questions:
+This main question can be answered by investigating the answer to the following two sub-questions:
 
 \begin{enumerate}
 	\item \textit{Does using a loss function that considers grid cell dependencies when evaluating \glspl{OGM} when training a network improve its results compared to using a loss function that evaluates each grid cell independently?}
@@ -32,7 +32,7 @@ The \glspl{OGM} will be generated using the \gls{DST} method. The literature stu
 The Waymo \cite{sun2020scalability} dataset will be used because the literature study shows it is the best dataset for \gls{OGM} prediction. Furthermore, no dynamic or semantic information is required for this research, therefore the second and third best datasets are not considered. 
 
 \subsubsection{Loss Functions}
-The \gls{MSE} and L1-loss are used as loss functions that evaluate each grid cell independently. These loss functions are already used in most \gls{OGM} prediction methods (see table \ref{tab:method_overview}), therefore those loss function have been proven to provide acceptable training results. The \gls{SSIM} and \gls{IS} are chosen as loss functions that consider dependencies between grid cells. Both functions are differentiable. Table \ref{tab:metrics} shows that these functions meet al criteria set for metrics. It is therefore expected they also function well as loss functions. Furthermore, the \gls{SSIM} is used as loss function by \cite{mohajerin2019multi}, which proves that this loss function provides acceptable training results.
+The \gls{MSE} and L1-loss are used as loss functions that evaluate each grid cell independently. These loss functions are already used in most \gls{OGM} prediction methods (see table \ref{tab:method_overview}), therefore those loss function have been proven to provide acceptable training results. The \gls{SSIM} and \gls{IS} are chosen as loss functions that consider dependencies between grid cells. Both functions are differentiable. Table \ref{tab:metrics} shows that these functions meet all criteria set for metrics. It is therefore expected they also function well as loss functions. Furthermore, the \gls{SSIM} is used as loss function by \cite{mohajerin2019multi}, which proves that this loss function provides acceptable training results.
 
 \subsubsection{Deep Learning Network Architecture} 
 First, Lange's \cite{lange2020attention} \gls{AAConvLSTM} network architecture will be used since it scored highest compared to the other PredNet methods on the Waymo \cite{sun2020scalability} dataset (see table \ref{tab:method_results}). Moreover, the code for Lange's \cite{lange2020attention} network is available online. Also, the \gls{DST} method is chosen to generate the \glspl{OGM}, which Lange also uses in their research. This will make it easier to fit the \gls{OGM}'s format to Lange's architecture. Lange's network originally uses a L1-loss for training. 

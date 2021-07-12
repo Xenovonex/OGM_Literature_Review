@@ -20,7 +20,6 @@
 }
 %% Sets page size and margins
 \usepackage[a4paper,top=3cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
-
 %% Useful packages
 \usepackage{amsmath}
 \usepackage{graphicx} 
@@ -45,6 +44,8 @@
 \usepackage{array}
 \usepackage{pgfplots}
 
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
 
 \usepackage{pifont}% http://ctan.org/pkg/pifont
 \newcommand{\cmark}{\ding{51}}%
