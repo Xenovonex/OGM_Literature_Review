@@ -2,12 +2,65 @@
 Based on the conclusions of the literature study, the following research plan is proposed. First, a title is presented in section \ref{subsec:rp_title}. Then, some background knowledge describing the research problem is described in section \ref{subsec:rp_background}. Subsequently, the research questions are proposed in section \ref{subsec:rp_questions}. After that, the methodology is explained in section \ref{subsec:rp_methodology}. This is followed by a planning in section\ref{subsec:rp_planning} to execute the proposed research. 
 
 \subsection{Title} \label{subsec:rp_title}
-Investigating the effect of loss functions on \glsfirst{OGM} prediction methods.
+Investigating the effect of loss functions on the performance of semantic \glsfirst{OGM} prediction methods.
 
 \subsection{Background} \label{subsec:rp_background}
-Like metrics, loss functions assess the quality of a network's performance. A loss function is used to train network, while a metric is used to evaluate a trained network. Loss functions compute the error between a network's output and the ground truth and back-propagate it to update the network's weights. This is how a network is trained. A metric and a loss function share the same purpose, except that a loss function should be differentiable so its derivative can be determined for back-propagation. Therefore, it makes sense that a loss function is tested against the same criteria as a metric to determine its ability to evaluate a specific task. In this case the task is to compare \glspl{OGM}. In the literature study, the loss functions that were used in the different \gls{OGM} prediction methods were evaluated against the criteria that were set for the metrics. The literature study discovered that most \gls{OGM} prediction methods using deep learning networks are trained using a loss function that does not consider grid cell dependencies. These loss functions only meet one of the five criteria (see chapter \ref{subsec:lossfunc}). One loss function, which meets all five criteria, considers grid cell dependencies in its loss function. \\
+Like metrics, loss functions assess the quality of a network's performance. A loss function is used to train a network, while a metric is used to evaluate a trained network. Loss functions compute the error between a network's output and the ground truth and back-propagate it to update the network's weights. This is how a network is trained. A metric and a loss function share the same purpose, except that a loss function should be differentiable so its derivative can be determined for back-propagation. Therefore, it makes sense that a loss function is tested against the same criteria as a metric to determine its ability to evaluate a specific task. In this case the evaluation task is to compare predicted \glspl{OGM} with ground truth \glspl{OGM}. This evaluation is necessary to train a network to perform \gls{OGM} predictions. In the literature study (Chapter \ref{subsec:lossfunc}), the loss functions that were used in the different \gls{OGM} prediction methods were evaluated against the criteria that were set for the metrics (Chapter \ref{sec:metrics}). \\
 
-From this background, a problem arises. Several deep learning networks that are trained to predict \glspl{OGM}, use different loss function that score differently when evaluating them against the metric criteria. This raises the question whether using loss functions that consider grid cell dependencies when evaluating \glspl{OGM} result in better performing networks compared to using loss functions that evaluate each grid cell independently. Additionally, if said case occurs, would the magnitude of improvement of the network's performance be consistent in multiple networks? This results in the following main research questions and two sub-questions in the next section. 
+The criteria are based on the safety assurance of an \glsfirst{AV} and its surroundings if the \gls{OGM} predictions are used for motion planning. Ideally, the \gls{OGM} predictions should be identical to the ground truth \glspl{OGM}. However, the predictions are expected to contain errors. Some errors can affect the resulting behavior of an \gls{AV} more than other errors. The expectation is that the more an \gls{AV}'s behavior is affected by errors, the higher the safety risk becomes for its surroundings. Therefore, the following five criteria are set which a loss function much meet to ensure that the \gls{OGM} prediction that results in the safest \gls{AV}'s behavior is considered the best. Figure \ref{fig:met_crit2} supports the criteria with images.
+
+% TODO: Below list is new
+\begin{enumerate}
+	\item \textit{The loss function considers the whole \gls{OGM} in its evaluation.} To compare \glspl{OGM}, it is important that the loss function considers each grid cell of the \gls{OGM} in its evaluation.
+	\item \textit{The loss function weighs local deletion or addition errors more than global noise errors.} This criterion demands that a loss function must differentiate between local deletion or addition errors (e.g. a local deletion of a pedestrian in figure \ref{fig:met_crit_lerr2}) and global noise errors (e.g. noise in figure \ref{fig:met_crit_gerr2}). If the number of erroneous grid cells in the form of noise is equal to that of a deletion or addition error, then the latter should be weighed more than the latter. It is expected that an \gls{AV} is robust enough to safely navigate given a noise environment representation, but not through an environment representation in which not all objects match with reality. 
+	\item \textit{The loss function weighs big displacement errors more than small displacement errors.} This criterion states that big displacement errors (e.g. in figure \ref{fig:met_crit_bdisp2} where the pedestrian is erroneously predicted far from the center vehicle's pathway) should weigh more than small displacement errors (e.g. in figure \ref{fig:met_crit_sdisp2} where the pedestrian is erroneously predicted on a slightly different place, but is still in the center vehicle's pathway). This is because small displacement errors are expected to result in less deviating and unsafe behavior of \glspl{AV} compared to the behavior given the ground truth, than big displacements.
+	\item \textit{The loss function weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.} This criterion states that errors close to the \gls{AV} (e.g. figures \ref{fig:met_crit_lerr2}, \ref{fig:met_crit_sdisp2}, \ref{fig:met_crit_bdisp2} show errors close to the center vehicle [\gls{AV}]) should weigh more than errors far from the \gls{AV} (e.g. figure \ref{fig:met_crit_edge2} shows a displacement error of a vehicle at the edge of the \gls{OGM}), since an \gls{AV} has less time to adjust its behavior for errors that occur close to it compared to further placed errors.
+	\item \textit{The loss function weighs additions and deletions more than displacements.} This criterion requires that the loss function should weigh additions and deletions (adding or removing objects from the \gls{OGM}, for instance the deletion of a pedestrian in figure \ref{fig:met_crit_lerr2}) more than displacement errors (e.g. figure \ref{fig:met_crit_sdisp2}). This is because the \gls{AV} is expected to more safely adjust its behavior when there is a displacement error compared to when there is a deletion or addition
+\end{enumerate} 
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/GT_colloquium}
+		\caption{Ground Truth}
+		\label{fig:met_crit_gt2}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/local_error_colloquium}
+		\caption{Local Deletion Error}
+		\label{fig:met_crit_lerr2}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/global_error_colloquium}
+		\caption{Global Noise Error}
+		\label{fig:met_crit_gerr2}
+	\end{subfigure} \hfil
+
+	\medskip
+
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/small_disp_colloquium}
+		\caption{Small Displacement Error}
+		\label{fig:met_crit_sdisp2}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/big_disp_colloquium}
+		\caption{Big Displacement Error}
+		\label{fig:met_crit_bdisp2}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/Edge_colloquium}
+		\caption{Edge Error}
+		\label{fig:met_crit_edge2}
+	\end{subfigure} \hfil
+	\caption{Examples of various \gls{OGM} prediction errors and the ground truth. Black: Off-road obstacle, Red: Vehicle, Blue: Cyclist, Orange: Pedestrian.}
+	\label{fig:met_crit2}
+\end{figure}
+
+
+The literature study discovered in chapter \ref{subsec:lossfunc} that most \gls{OGM} prediction methods using deep learning networks are trained using a loss function that does not consider grid cell dependencies. These loss functions are the L1-loss, L2-loss, \gls{MSE}, and Cross-Entropy loss. These loss functions only meet one of the five criteria (see table \ref{tab:loss_func} in chapter \ref{sec:ogm_methods} of the literature review). However, one method (Mohajerin's \cite{mohajerin2019multi} method in chapter \ref{subsec:deeptrack}), does use a loss function, the \glsfirst{SSIM} (Chapter \ref{subsec:ssim_met}), which meets all five criteria. This loss function considers grid cell dependencies. Furthermore, the \glsfirst{IS} metric, described in chapter \ref{subsec:is_met}, also considers grid cell dependencies. If the \gls{IS} metric were used as a loss function, it would also meet all five criteria. \\
+
+From this background, a problem arises. Several deep learning networks that are trained to predict \glspl{OGM}, use different loss function that score differently when evaluating them against the metric criteria. This raises the question whether using loss functions that consider grid cell dependencies, such as the \gls{SSIM} and \gls{IS} losses, when evaluating \glspl{OGM} result in better performing networks compared to using loss functions that evaluate each grid cell independently. Additionally, if said case occurs, would the magnitude of improvement of the network's performance be consistent in multiple networks? This results in the following main research questions and two sub-questions in the next section. 
 
 \subsection{Research Questions} \label{subsec:rp_questions}
 The main question for this research proposal results from the background and problem statement and is as follows: \\ \\
@@ -16,7 +69,7 @@ The main question for this research proposal results from the background and pro
 This main question can be answered by investigating the answer to the following two sub-questions:
 
 \begin{enumerate}
-	\item \textit{Does using a loss function that considers grid cell dependencies when evaluating \glspl{OGM} when training a network improve its results compared to using a loss function that evaluates each grid cell independently?}
+	\item \textit{Does using the \gls{SSIM} or \gls{IS} loss functions for evaluating \glspl{OGM} when training a network improve its performance compared to using the L1-loss or \gls{MSE} functions?}
 	\item \textit{Is the effect of different loss functions consistent when they are used to train different deep learning networks?}
 \end{enumerate}
 
@@ -26,16 +79,16 @@ To answer the questions a methodology is described in the following section.
 To answer the research questions, multiple deep learning networks have to be trained, using various loss functions, to perform \gls{OGM} predictions. As described in the literature study, to perform \gls{OGM} predictions several components are required. A \glspl{OGM} generation method is required, a dataset that contains suitable data for \gls{OGM} generation and prediction should be chosen, the various loss functions must be chosen to train the networks, the networks that predict the \glspl{OGM} should be chosen, and metrics to evaluate and compare the network's results are required. Finally, experiments can be done to answer the research questions. The choices for the components are discussed in the following subsections. 
 
 \subsubsection{\gls{OGM} generation method} 
-The \glspl{OGM} will be generated using the \gls{DST} method. The literature study shows that this method is the most suitable one to use for \gls{OGM} prediction. Moreover, this method has been used before by the PredNet-based \gls{OGM} prediction methods, which gives a practical reason to use it together with one of those methods.  
+The \glspl{OGM} will be generated using the \gls{DST} method. Chapter \ref{sec:ogm} of the literature study shows that this method is the most suitable one to use for \gls{OGM} prediction. Moreover, this method has been used before by the PredNet-based \gls{OGM} prediction methods, which gives a practical reason to use it together with one of those methods.  
 
 \subsubsection{Dataset} 
-The Waymo \cite{sun2020scalability} dataset will be used because the literature study shows it is the best dataset for \gls{OGM} prediction. Furthermore, no dynamic or semantic information is required for this research, therefore the second and third best datasets are not considered. 
+The Waymo \cite{sun2020scalability} dataset will be used because the literature study shows in chapter \ref{sec:datasets} that it is the best dataset for \gls{OGM} prediction. Furthermore, no dynamic or semantic information is required for this research, therefore the second and third best datasets are not considered. 
 
 \subsubsection{Loss Functions}
-The \gls{MSE} and L1-loss are used as loss functions that evaluate each grid cell independently. These loss functions are already used in most \gls{OGM} prediction methods (see table \ref{tab:method_overview}), therefore those loss function have been proven to provide acceptable training results. The \gls{SSIM} and \gls{IS} are chosen as loss functions that consider dependencies between grid cells. Both functions are differentiable. Table \ref{tab:metrics} shows that these functions meet all criteria set for metrics. It is therefore expected they also function well as loss functions. Furthermore, the \gls{SSIM} is used as loss function by \cite{mohajerin2019multi}, which proves that this loss function provides acceptable training results.
+The \gls{MSE} and L1-loss are used as loss functions that evaluate each grid cell independently. These loss functions are already used in most \gls{OGM} prediction methods (see table \ref{tab:method_overview} in chapter \ref{sec:ogm_methods} in the literature study), therefore those loss function have been proven to provide acceptable training results. The \gls{SSIM} and \gls{IS} are chosen as loss functions that consider dependencies between grid cells. Both functions are differentiable. Table \ref{tab:metrics} shows that these functions meet all criteria set for metrics. It is therefore expected they also function well as loss functions. Furthermore, the \gls{SSIM} is used as loss function by \cite{mohajerin2019multi}, which proves that this loss function provides acceptable training results.
 
 \subsubsection{Deep Learning Network Architecture} 
-First, Lange's \cite{lange2020attention} \gls{AAConvLSTM} network architecture will be used since it scored highest compared to the other PredNet methods on the Waymo \cite{sun2020scalability} dataset (see table \ref{tab:method_results}). Moreover, the code for Lange's \cite{lange2020attention} network is available online. Also, the \gls{DST} method is chosen to generate the \glspl{OGM}, which Lange also uses in their research. This will make it easier to fit the \gls{OGM}'s format to Lange's architecture. Lange's network originally uses a L1-loss for training. 
+First, Lange's \cite{lange2020attention} \gls{AAConvLSTM} network architecture will be used since it scored highest compared to the other PredNet methods on the Waymo \cite{sun2020scalability} dataset (see table \ref{tab:method_results} in chapter \ref{sec:ogm_methods} in the literature study) Moreover, the code for Lange's \cite{lange2020attention} network is available online. Also, the \gls{DST} method is chosen to generate the \glspl{OGM}, which Lange also uses in their research. This will make it easier to fit the \gls{OGM}'s format to Lange's architecture. Lange's network originally uses a L1-loss for training. 
 Second, Mohajerin's \cite{mohajerin2019multi} network architecture will be used to compare whether the effects of different loss functions are consistent between different network architectures. Mohajerin \cite{mohajerin2019multi} originally uses the \gls{SSIM} as a loss function in its network.
 
 \subsubsection{Metrics} 
@@ -47,12 +100,13 @@ First, the Waymo \cite{sun2020scalability} dataset is used to generate \gls{OGM}
 \subsection{Planning} \label{subsec:rp_planning}
 This planning gives a monthly overview about when this research proposal will be executed. 
 
-\paragraph{June} Analysis of the Waymo \cite{sun2020scalability} dataset.
+\paragraph{June} Analysis of the Waymo Open - Perception - \cite{sun2020scalability} dataset.
 \paragraph{July} Generation of \gls{OGM} sequences from the dataset.
-\paragraph{August} Preparation the deep learning networks for training.
-\paragraph{September} Training the deep learning networks.
-\paragraph{October} Analysis of the results and writing thesis. 
-\paragraph{November} Writing thesis.
-\paragraph{December} Graduation.
+\paragraph{August} Preparation the deep learning networks for training. Summer Vacation.
+\paragraph{September} Preparation the deep learning networks for training.
+\paragraph{October} Training the deep learning networks.
+\paragraph{November} Analysis of the results and writing thesis. 
+\paragraph{December} Writing thesis.
+\paragraph{January-February} Graduation (and any unexpected delays).
 
 
