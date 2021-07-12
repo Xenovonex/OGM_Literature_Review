@@ -2,39 +2,38 @@
 Based on the conclusions of the literature study, the following research plan is proposed. First, a title is presented in section \ref{subsec:rp_title}. Then, some background knowledge describing the research problem is described in section \ref{subsec:rp_background}. Subsequently, the research questions are proposed in section \ref{subsec:rp_questions}. After that, the methodology is explained in section \ref{subsec:rp_methodology}. This is followed by a planning in section\ref{subsec:rp_planning} to execute the proposed research. 
 
 \subsection{Title} \label{subsec:rp_title}
-Investigating the effect of loss functions on the performance of \glsfirst{OGM} prediction methods.
+Investigating the effect of loss functions on the performance of semantic \glsfirst{OGM} prediction methods.
 
 \subsection{Background} \label{subsec:rp_background}
 Like metrics, loss functions assess the quality of a network's performance. A loss function is used to train a network, while a metric is used to evaluate a trained network. Loss functions compute the error between a network's output and the ground truth and back-propagate it to update the network's weights. This is how a network is trained. A metric and a loss function share the same purpose, except that a loss function should be differentiable so its derivative can be determined for back-propagation. Therefore, it makes sense that a loss function is tested against the same criteria as a metric to determine its ability to evaluate a specific task. In this case the evaluation task is to compare predicted \glspl{OGM} with ground truth \glspl{OGM}. This evaluation is necessary to train a network to perform \gls{OGM} predictions. In the literature study (Chapter \ref{subsec:lossfunc}), the loss functions that were used in the different \gls{OGM} prediction methods were evaluated against the criteria that were set for the metrics (Chapter \ref{sec:metrics}). \\
 
-The criteria are based on the safety assurance of an \glsfirst{AV} and its surroundings if the \gls{OGM} predictions are used for motion planning. Ideally, the \gls{OGM} predictions should be identical to the ground truth \glspl{OGM}. However, the predictions are expected to contain errors. Some errors can affect the resulting behavior of an \gls{AV} more than other errors. The expectation is that the more an \gls{AV}'s behavior is affected by errors, the higher the safety risk becomes for its surroundings. Therefore, the following five criteria are set which a loss function much meet to ensure that the \gls{OGM} prediction that results in the safest \gls{AV}'s behavior is considered the best. Figure \ref{fig:met_crit} supports the criteria with images.
+The criteria are based on the safety assurance of an \glsfirst{AV} and its surroundings if the \gls{OGM} predictions are used for motion planning. Ideally, the \gls{OGM} predictions should be identical to the ground truth \glspl{OGM}. However, the predictions are expected to contain errors. Some errors can affect the resulting behavior of an \gls{AV} more than other errors. The expectation is that the more an \gls{AV}'s behavior is affected by errors, the higher the safety risk becomes for its surroundings. Therefore, the following five criteria are set which a loss function much meet to ensure that the \gls{OGM} prediction that results in the safest \gls{AV}'s behavior is considered the best. Figure \ref{fig:met_crit2} supports the criteria with images.
 
+% TODO: Below list is new
 \begin{enumerate}
-	\item The loss function considers the whole \gls{OGM} in its evaluation.
-	\item The loss function weighs local errors more than global errors.
-	\item The loss function weighs big displacement errors more than small displacement errors. 
-	\item The loss function weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.
-	\item The loss function weighs additions and deletions more than displacements.
-\end{enumerate}
-
-Chapter \ref{sec:metrics} of the literature review substantiates the criteria. To compare \glspl{OGM}, it is important that the whole \gls{OGM} is considered in the comparison. So, the first criterion means that the loss function must consider each grid cell of the \gls{OGM} in its evaluation. The second criterion demands that a loss function must differentiate between local errors (e.g. a local deletion of a pedestrian in figure \ref{fig:met_crit_lerr}) and global errors (e.g. noise in figure \ref{fig:met_crit_gerr}). The loss must also weigh those local errors more than the global errors, since it is expected that an \gls{AV} is robust enough to safely navigate through global errors such as noise, but not through local errors (the deletion of the pedestrian). The third criterion states that big displacement errors (e.g. in figure \ref{fig:met_crit_bdisp} where the pedestrian is erroneously predicted far from the center vehicle's pathway) should weigh more than small displacement errors (e.g. in figure \ref{fig:met_crit_sdisp} where the pedestrian is erroneously predicted on a slightly different place, but is still in the center vehicle's pathway). This is because small displacement errors are expected to result in less deviating and unsafe behavior of \glspl{AV} compared to the behavior given the ground truth, than big displacements. The fourth criterion states that errors close to the \gls{AV} (e.g. figures \ref{fig:met_crit_lerr}, \ref{fig:met_crit_sdisp}, \ref{fig:met_crit_bdisp} show errors close to the center vehicle [\gls{AV}]) should weigh more than errors far from the \gls{AV} (e.g. figure \ref{fig:met_crit_edge} shows a displacement error of a vehicle at the edge of the \gls{OGM}), since an \gls{AV} has less time to adjust its behavior for errors that occur close to it compared to further placed errors. The fifth criterion requires that the loss function should weigh additions and deletions (adding or removing objects from the \gls{OGM}, for instance the deletion of a pedestrian in figure \ref{fig:met_crit_lerr}) more than displacement errors (e.g. figure \ref{fig:met_crit_sdisp}). This is because the \gls{AV} is expected to more safely adjust its behavior when there is a displacement error compared to when there is a deletion or addition. \\
+	\item \textit{The loss function considers the whole \gls{OGM} in its evaluation.} To compare \glspl{OGM}, it is important that the loss function considers each grid cell of the \gls{OGM} in its evaluation.
+	\item \textit{The loss function weighs local deletion or addition errors more than global noise errors.} This criterion demands that a loss function must differentiate between local deletion or addition errors (e.g. a local deletion of a pedestrian in figure \ref{fig:met_crit_lerr2}) and global noise errors (e.g. noise in figure \ref{fig:met_crit_gerr2}). If the number of erroneous grid cells in the form of noise is equal to that of a deletion or addition error, then the latter should be weighed more than the latter. It is expected that an \gls{AV} is robust enough to safely navigate given a noise environment representation, but not through an environment representation in which not all objects match with reality. 
+	\item \textit{The loss function weighs big displacement errors more than small displacement errors.} This criterion states that big displacement errors (e.g. in figure \ref{fig:met_crit_bdisp2} where the pedestrian is erroneously predicted far from the center vehicle's pathway) should weigh more than small displacement errors (e.g. in figure \ref{fig:met_crit_sdisp2} where the pedestrian is erroneously predicted on a slightly different place, but is still in the center vehicle's pathway). This is because small displacement errors are expected to result in less deviating and unsafe behavior of \glspl{AV} compared to the behavior given the ground truth, than big displacements.
+	\item \textit{The loss function weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.} This criterion states that errors close to the \gls{AV} (e.g. figures \ref{fig:met_crit_lerr2}, \ref{fig:met_crit_sdisp2}, \ref{fig:met_crit_bdisp2} show errors close to the center vehicle [\gls{AV}]) should weigh more than errors far from the \gls{AV} (e.g. figure \ref{fig:met_crit_edge2} shows a displacement error of a vehicle at the edge of the \gls{OGM}), since an \gls{AV} has less time to adjust its behavior for errors that occur close to it compared to further placed errors.
+	\item \textit{The loss function weighs additions and deletions more than displacements.} This criterion requires that the loss function should weigh additions and deletions (adding or removing objects from the \gls{OGM}, for instance the deletion of a pedestrian in figure \ref{fig:met_crit_lerr2}) more than displacement errors (e.g. figure \ref{fig:met_crit_sdisp2}). This is because the \gls{AV} is expected to more safely adjust its behavior when there is a displacement error compared to when there is a deletion or addition
+\end{enumerate} 
 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/GT_colloquium}
 		\caption{Ground Truth}
-		\label{fig:met_crit_gt}
+		\label{fig:met_crit_gt2}
 	\end{subfigure} \hfil
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/local_error_colloquium}
 		\caption{Local Deletion Error}
-		\label{fig:met_crit_lerr}
+		\label{fig:met_crit_lerr2}
 	\end{subfigure} \hfil
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/global_error_colloquium}
 		\caption{Global Noise Error}
-		\label{fig:met_crit_gerr}
+		\label{fig:met_crit_gerr2}
 	\end{subfigure} \hfil
 
 	\medskip
@@ -42,20 +41,20 @@ Chapter \ref{sec:metrics} of the literature review substantiates the criteria. T
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/small_disp_colloquium}
 		\caption{Small Displacement Error}
-		\label{fig:met_crit_sdisp}
+		\label{fig:met_crit_sdisp2}
 	\end{subfigure} \hfil
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/big_disp_colloquium}
 		\caption{Big Displacement Error}
-		\label{fig:met_crit_bdisp}
+		\label{fig:met_crit_bdisp2}
 	\end{subfigure} \hfil
 	\begin{subfigure}[t]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Res_Prop/Edge_colloquium}
 		\caption{Edge Error}
-		\label{fig:met_crit_edge}
+		\label{fig:met_crit_edge2}
 	\end{subfigure} \hfil
 	\caption{Examples of various \gls{OGM} prediction errors and the ground truth. Black: Off-road obstacle, Red: Vehicle, Blue: Cyclist, Orange: Pedestrian.}
-	\label{fig:met_crit}
+	\label{fig:met_crit2}
 \end{figure}
 
 

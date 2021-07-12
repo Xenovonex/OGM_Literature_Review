@@ -4,7 +4,7 @@ In 1985 Moravec and Elfes \cite{moravec1985high} investigated the use of sonar m
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\linewidth]{Figures/Occupancy_Grid_Map/The_Two-dimensional_Sonar_map}
-	\caption{This image shows an \gls{OGM} of a robot's surrounding environment. The solid lines represent the outline of the room and of the major objects that formed the robot's environment. The large circles in the image are the positions at which the robot performed measurements of its surroundings. The measurements are used to generate the \gls{OGM}, which is a \gls{BEV} raster in which each cell represents the state of an area within the environment. Each cell contains a symbol or white space. Empty areas with a high certainty factor are represented by white space. Empty areas with lower certainty factors are represented by "+" symbols of increasing thickness the lower the certainty. Occupied areas are represented by "x" symbols, and Unknown areas by "." symbols. Image from \cite{moravec1985high}.}
+	\caption{An \gls{OGM} of a robot's surrounding environment. The solid lines represent the outline of the room and of the major objects that formed the robot's environment. The large circles in the image are the positions at which the robot performed measurements of its surroundings. The measurements are used to generate the \gls{OGM}, which is a \gls{BEV} raster in which each cell represents the state of an area within the environment. Each cell contains a symbol or white space. Empty areas with a high certainty factor are represented by white space. Empty areas with lower certainty factors are represented by "+" symbols of increasing thickness the lower the certainty. Occupied areas are represented by "x" symbols, and Unknown areas by "." symbols. Image from \cite{moravec1985high}.}
 	\label{fig:OGMBEVmoravec}
 \end{figure}
 
@@ -16,9 +16,32 @@ Formally, the \gls{OGM} is often represented in a tensor or matrix, $m$, of whic
 
 \hfill \break
 
+% TODO: this paragraph and table is new/on a new location - until end of this subsection
 For simplicity, the notation $m_{i,j}$ will be used for the case where the cell is occupied $m_{i,j} = O$ and $\neg m_{i,j}$ for the empty state $m_{i,j} = E$.
-These state values can be determined in several ways. In section \ref{subsec:prob_OGM}, two probabilistic methods to obtain occupancy state values and generate \glspl{OGM} will be discussed. The first method uses an inverse sensor model and the second uses a forward sensor model. In section \ref{subsec:evid_OGM}, an evidential method for \gls{OGM} generation that uses the \gls{DST} will be discussed. Then, in section \ref{subsec:alt_OGM}, some alternative, less common \gls{OGM} generation methods are briefly discussed.
-Besides ways to generate the traditional \gls{OGM} maps that provides information about the cell occupancy, there are extended \gls{OGM} forms that contain more information. Section \ref{subsec:OGM_ext_form} will elaborate on some of those extended forms. Finally, section \ref{subsec:OGM_conclude} concludes this chapter by answering the question: \airquote{\textit{What \gls{OGM} form is most suitable to use in \gls{OGM} prediction methods?}}
+These state values can be determined in several ways from the \gls{AV}'s raw sensor data. Table \ref{tab:ogm_overview} shows the qualitative properties of several \gls{OGM} generation methods with respect to accuracy, computation effort, and the ability to distinguish ignorance from uncertainty. Two probabilistic, one evidential (\gls{DST}), one possibilistic, and one neural network based method are listed in the table.  The investigated literature which compares \gls{OGM} generation methods does hardly provide quantitative results for accuracy and computation effort. Hence, this qualitative table only provides relative information in the categories Low, Average, High, and Unkown. Further reasoning behind the qualitative accuracy and computation effort results in table \ref{tab:ogm_overview} are provided in the following sections of this chapter. \\
+
+\begin{table}[h!] 
+	\caption{An overview of the properties of each \gls{OGM} generation method based on the examined literature in sections \ref{subsec:prob_OGM}, \ref{subsec:evid_OGM}, and \ref{subsec:alt_OGM}.}
+	\centering
+	\resizebox{\linewidth}{!}{%
+		\begin{tabular}{llll} 
+			\toprule[0.25ex]
+			& \textbf{Accuracy} & \textbf{Computation Effort} & \textbf{Ignorance-Uncertainty Distinction} \\ 
+			\midrule
+			\textbf{Inverse Probabilistic} & Average & Low & No \\
+			\textbf{Forward Probabilistic} & High & High & No \\
+			\textbf{\gls{DST}} & High & Average & Yes \\
+			\textbf{Possibilistic} & High & Average & Yes \\
+			\textbf{Neural Network Based} & Low & Unknown & Yes \\
+			\bottomrule[0.25ex]
+		\end{tabular}
+	}
+	\label{tab:ogm_overview}
+\end{table}
+
+In section \ref{subsec:prob_OGM}, the two probabilistic methods to obtain occupancy state values and generate \glspl{OGM} will be discussed. The first method uses an inverse sensor model and the second uses a forward sensor model. In section \ref{subsec:evid_OGM}, the evidential method for \gls{OGM} generation that uses the \gls{DST} will be discussed. Then, in section \ref{subsec:alt_OGM}, the alternative, less common \gls{OGM} generation methods (possibilistic and neural-network based) are briefly discussed.
+Besides ways to generate the traditional \gls{OGM} maps that provides information about the cell occupancy, there are extended \gls{OGM} forms that contain more information. Section \ref{subsec:OGM_ext_form} will elaborate on some of those extended forms. Finally, section \ref{subsec:OGM_conclude} concludes this chapter by answering the question: \airquote{\textit{What \gls{OGM} form is good to use in \gls{OGM} prediction methods?}}
+
 
 %Sources: Environment Perception Using Grid Occupancy, Fusion-2014, using occupancy grids for mobile robot.., probabilistic algorithms in robotics, Learning Occupancy Grids With Forward Sensor Models, Comparative Study of Inverse and Forward Sensor Models
 
@@ -65,12 +88,12 @@ Afterwards, a threshold is set which determines at what probability a grid cell 
 	\centering
 	\begin{subfigure}[t]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Occupancy_Grid_Map/Occupied_Areas_in_Map}
-		\caption{This figure shows the occupied areas in the map where the height of the peaks shows the occupancy certainty factors.\cite{moravec1985high}}
+		\caption{The representation of the occupied areas in the map where the height of the peaks shows the occupancy certainty factors.\cite{moravec1985high}}
 		\label{fig:OGMwothresh}
 	\end{subfigure} \hspace{0.1\textwidth}
 	\begin{subfigure}[t]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{Figures/Occupancy_Grid_Map/Occupied_Areas_in_Map_after_Thresholding}
-		\caption{This figure shows the occupied areas in the map after thresholding the occupancy certainty factors.\cite{moravec1985high}}
+		\caption{The occupied areas in the map after thresholding the occupancy certainty factors.\cite{moravec1985high}}
 		\label{fig:OGMwthresh}
 	\end{subfigure}
 	\caption{Thresholding of the occupancy grid map data.}
@@ -124,7 +147,7 @@ In this subsection, the inverse and forward sensor models are compared. Figure \
 	\label{fig:OGM_inv_for_comp}
 \end{figure}
 
-The forward sensor model is more accurate but also requires much more computational effort \cite{carvalho2013comparative}. Both probabilistic methods have in common that they cannot tell the difference between incompleteness (i.e. ignorance) and uncertainty. When the occurrence of an event does not hold absolute confidence, this lack of confidence can have two causes. The first cause could be that due to a lack of information another possible event is not excluded. This lack of information is defined as ignorance. A second cause could be that the occurrence of the event is not definitely true, which is defined as uncertainty \cite{liu2001propositional}.
+The forward sensor model is more accurate but also requires much more computational effort compared to the inverse sensor model \cite{carvalho2013comparative}. Both probabilistic methods have in common that they cannot tell the difference between incompleteness (i.e. ignorance) and uncertainty. When the occurrence of an event does not hold absolute confidence, this lack of confidence can have two causes. The first cause could be that due to a lack of information another possible event is not excluded. This lack of information is defined as ignorance. A second cause could be that the occurrence of the event is not definitely true, which is defined as uncertainty \cite{liu2001propositional}.
 The \glsfirst{DST} \cite{dempster1967upper} \cite{shafer1976mathematical}, however, can distinguish between ignorance and uncertainty. This theory can be used to generate better \glspl{OGM}. In the following subsection, evidential occupancy grid mapping, using the \gls{DST}, will be explained.
 
 
@@ -275,29 +298,11 @@ Nuss \cite{nuss2018random} continues this research and proposes an improved meth
 Besides the 3D \gls{OGM}, semantic \gls{OGM} and the DOGMa, there are more variations to occupancy grid maps. In some papers, the term \gls{OGM} is not used however, making it sometimes hard to define what is still an \gls{OGM} and what isn't. 
 For example, Wu \cite{wu2020motionnet} proposes a method to predict future environments using Bird's Eye View (BEV) maps. The paper states that they define an alternative to OGMs, which they call a BEV map. The BEV map is a grid map with discrete occupancy information in each cell. The BEV map has multiple channels. Each channel represents another height layer of the environment, which basically means that the whole BEV map is a 2D pseudo-image, because all layers together form a 3D representation of the environment. In principle, this approach is similar to a 3D \gls{OGM}. In Wu's method, a Deep Learning Network is used to apply semantics to the BEV map and estimate temporal features (the dynamics). In essence, Wu's method creates OGMs that are 3D and incorporate semantics and dynamics. In this literature review, environment representations such as Wu's are also considered \gls{OGM} variations. \\
 
-\subsection{What OGM form is most suitable to use in OGM prediction methods?} \label{subsec:OGM_conclude}
+% TODO: This conclusion has (partly) changed
+\subsection{What \gls{OGM} form is good to use in \gls{OGM} prediction methods?} \label{subsec:OGM_conclude}
+What \gls{OGM} form is good depends on the requirements of the prediction method. Table \ref{tab:ogm_overview} shows an overview of the qualitative properties of the different \gls{OGM} generation methods. These properties are based on the literature about \gls{OGM} generation method comparisons, as discussed in sections \ref{subsec:prob_OGM}, \ref{subsec:evid_OGM}, and \ref{subsec:alt_OGM}. In the case of \glspl{AV}, there will be a trade-off between accuracy and computation time. If a fast method is desired, the inverse probabilistic method would be a good choice. The downside is that the accuracy will be lower compared to most other methods and there is no distinction between ignorance and uncertainty. \\
 
-What \gls{OGM} form is best depends on the requirements of the prediction method. Table \ref{tab:ogm_overview} shows an overview of the different \gls{OGM} generation methods. In the case of \glspl{AV}, there will be a trade-off between accuracy and computation time. If a fast method is desired, the inverse probabilistic method would be the best choice. The downside is that the accuracy will be lower compared to most other methods and there is no distinction between ignorance and uncertainty. If a higher accuracy is desired and there is the means to carry a higher computational load, the \gls{DST} or possibilistic generation methods are more suitable because of their high accuracy and distinction of ignorance and uncertainty. The possibilistic method is more conservative than the \gls{DST} method, which results in fewer outliers but more artifacts and information loss in the \glspl{OGM} compared to the \gls{DST} method. In the context of \glspl{AV}, having artifacts in the \glspl{OGM} and a higher information loss both might result in dangerous situations in which the \gls{AV} either perceives something that is not present, or does not perceive something that is present. Therefore, the best option would be the \gls{DST} method. Due to the high computational effort of the forward sensor model, and because the \gls{NN}-based method is not developed enough to acquire a good accuracy in real situations, these options are considered the least suitable for \gls{OGM} prediction purposes. 	 
-
-
-\begin{table}[h!] 
-	\caption{This table gives an overview of the properties of each \gls{OGM} generation method based on the information in this chapter.}
-	\centering
-	\resizebox{\linewidth}{!}{%
-		\begin{tabular}{llll} 
-			\toprule[0.25ex]
-			& \textbf{Accuracy} & \textbf{Computation Effort} & \textbf{Ignorance-Uncertainty Distinction} \\ 
-			\midrule
-			\textbf{Inverse Probabilistic} & Average & Low & No \\
-			\textbf{Forward Probabilistic} & High & High & No \\
-			\textbf{\gls{DST}} & High & Average & Yes \\
-			\textbf{Possibilistic} & High & Average & Yes \\
-			\textbf{Neural Network Based} & Low & Unknown & Yes \\
-			\bottomrule[0.25ex]
-		\end{tabular}
-	}
-\label{tab:ogm_overview}
-\end{table}
+If a higher accuracy is desired and there is the means to carry a higher computational load, the \gls{DST} or possibilistic generation methods are more suitable because of their higher accuracy and distinction of ignorance and uncertainty. The possibilistic method is more conservative than the \gls{DST} method, which results in fewer outliers but more artifacts and information loss in the \glspl{OGM} compared to the \gls{DST} method. In the context of \glspl{AV}, having artifacts in the \glspl{OGM} and a higher information loss both might result in dangerous situations in which the \gls{AV} either perceives something that is not present, or does not perceive something that is present. Therefore, the better option would be the \gls{DST} method. Due to the much higher computational effort of the forward sensor model, and because the \gls{NN}-based method is not developed enough to acquire a good accuracy in real situations, these options are considered the least suitable for \gls{OGM} prediction purposes. \\ 
 
 Further, regarding the extended forms, each extension will provide the \gls{OGM} with more information. Generally, when performing predictions, having more information will result in better predictions. The trade-off in this case is again one of accuracy versus computation effort. Whether the amount of additional information is worth the additional computation effort depends on the goal of the predictions. \\
 
