@@ -1,33 +1,32 @@
 \section{Datasets} \label{sec:datasets}
-% TODO rewrite dataset chapter
-% TODO look at overleaf comments for the dataset and metrics chapters
+When using deep learning networks, it is important to choose a dataset (or multiple datasets) that optimally fulfills the requirements for its purpose. The dataset will be used to train and evaluate the deep learning network on. So, if the dataset is faulty, the resulting model will be faulty as well. A faulty model will predict faulty \glspl{OGM}, which could cause dangerous situations if it is used by an \gls{AV} and affects its decisions regarding motion planning. This chapter first discusses what the requirements are for a dataset that is used for \gls{OGM} prediction. Then, based on those requirements, nine criteria are devised that are used to evaluate the adequacy of a dataset. Subsequently, ten datasets are evaluated against the criteria and compared with one another. A dataset top 3 is presented in this chapter's conclusion in which the question \airquote{\textit{What is a suitable dataset to generate \gls{OGM} sequences for \gls{OGM} prediction from among current traffic scene datasets?}} is answered. \\
 
-When using deep learning networks, it is important to choose a dataset (or multiple datasets) that optimally fulfills the requirements for its purpose. The dataset will be used to train and evaluate the deep learning network on. So, if the dataset is faulty, the resulting model will be faulty as well. A faulty model will predict faulty \glspl{OGM}, which could cause dangerous situations if it is used by an \gls{AV} and affects its decisions regarding motion planning. This chapter first discusses what the requirements are for a dataset that is used for \gls{OGM} prediction. Then, based on those requirements, nine criteria are devised that are used to evaluate the adequacy of a dataset. Subsequently, ten datasets are evaluated against the criteria and compared with one another. A dataset top 3 is presented in this chapter's conclusion in which the question \airquote{\textit{What dataset is most suitable to generate \gls{OGM} sequences for \gls{OGM} prediction?}} is answered. \\
+In the case of \gls{OGM} prediction in a traffic scene context, literature provides (almost) no criteria which a dataset for this purpose should meet. Therefore, this literature study provides its own criteria for a \gls{OGM} prediction dataset, based on practical reasons and broader literature about datasets. \\
 
-In the case of \gls{OGM} prediction in a traffic scene context, a dataset is desired that contains \gls{BEV} environmental data of ego-vehicle centered traffic scenes that can be used to generate \gls{OGM} sequences. Moreover, if the dataset contains data that can be used to generate an extended form of the \gls{OGM}, as is discussed in chapter \ref{sec:ogm}, it would be beneficial. \\
-
+A dataset is desired that contains \gls{BEV} environmental data of ego-vehicle centered traffic scenes that can be used to generate \gls{OGM} sequences. Moreover, if the dataset contains data that can be used to generate an extended form of the \gls{OGM}, as is discussed in chapter \ref{sec:ogm}, it would be beneficial.
 It is important that the dataset's traffic scenes reflect the diversity of real world situations. The way a dataset's data is sampled from a population can influence how much the dataset reflects reality. A model that is trained on biased data could generate inaccurate predictions \cite{mehrabi2019survey}. If a traffic scene dataset is obtained in only one geographic, environmental, or cultural location, the dataset will contain some kind of bias towards the behavior, representation, and environmental context of that location \cite{mehrabi2019survey}. For example, \cite{nordfjaern2010investigation}'s research shows that geographical location (rural vs urban), and factors such as age, gender, and education influence the behavior of drivers. Also, \cite{nordfjaern2014culture} shows that traffic risk perception differs per culture and country. This can result in different traffic behavior between countries given the same traffic scene context. It is therefore important that a dataset contains data from multiple locations in varying geographical, cultural, and environmental areas. Also, the dataset should be diverse in the kind of traffic participants it contains. Besides vehicles and pedestrians, it is desired that the dataset contains other traffic participant classes (e.g. cyclists, riders). The more diverse the dataset is, the smaller the dataset bias is, and the better the prediction accuracy is of the model that is trained on that dataset. Besides having diverse data, the performance of a deep learning network also increases with a logarithmically increasing dataset size \cite{torralba2011unbiased}. Therefore, a dataset should be large besides being diverse. For large-scale datasets, even rare traffic cases are expected to be captured enough times so the deep learning network can generalize those situations accurately. \\
 
 Regarding the traffic scene sequences, literature does not mention the ideal frame rate that \gls{OGM} sequences should have to generate optimal predictions, \cite{chen2007review} reviewed literature on what the influence of frame rate of visual perceptions is on human perceptual performance. In \cite{chen2007review}'s reviewed papers, humans are situated in virtual environments in which the visual information of the environment is updated at a variable frame rate. The research shows that higher frame rates increase the performance (accuracy, reaction time, recognition) at which humans completed certain perceptual tasks. Frame rates below 10 Hz showed sharp performance degradations, while frame rates higher than 15 Hz did not increase performance significantly. Therefore, a frame rate of 10 Hz is considered the minimum threshold for accurate human perceptual understanding. Using humans as reference for the performance of deep learning networks, a frame rate of 10 Hz is also considered as the minimal threshold for accurate \gls{OGM} prediction. So, it is desired that a dataset has at least a 10 Hz sampling rate of its environment. Furthermore, the traffic scene sequences should be long enough. The sequences have to be split into a part that represents the 'past' to use as input sequences for the deep learning network, and a ground truth of the 'future' to compare the predictions with. The research by \cite{lange2020attention} uses $0.5$s of past \glspl{OGM} to predict up to $1.5$s of future \glspl{OGM}. So, a sequence of $2$s is sufficient to perform \gls{OGM} prediction using this method. If a margin of $0.5$s is considered for the length of the past information and for the length of the prediction horizon, a dataset should provide \gls{OGM} sequences of at least $3$s long. \\
 
 Aside from the contents of the dataset, the quality of the sensors with which the dataset is recorded is essential. The resolutions of the sensors should be high enough to capture the smallest traffic participant's (\glspl{VRU}) behavioral patterns. Not only the performance of deep learning network, but also the time that is required to pre-process, train, and evaluate the network is greatly dependent on what dataset is used. Also, the performance of a network should be compared reliably. Therefore, it is important that a dataset is chosen which other research has based their network training and evaluation on, so there are enough results for reliable comparisons. \\
 
-To ensure that the optimal dataset is chosen for \gls{OGM} prediction research, the following list of criteria is devised which a dataset has to meet in order to be suitable for \gls{OGM} prediction. The criteria are based on the  Based on how the dataset scores on this list, an informed decision can be made. 
+% TODO: References list
+To ensure that the optimal dataset is chosen for \gls{OGM} prediction research, the following list of criteria is devised which a dataset has to meet in order to be suitable for \gls{OGM} prediction. Based on how the dataset scores on this list, an informed decision can be made. In the case a criterion is derived from the literature used in the arguments above, the associated citation will be mentioned after the criterion. If the criterion is based on a practical matter, no citation is given.
 
 \begin{enumerate}
 	\item The dataset contains data of ego-vehicle centered traffic scene sequences that provide at least 2D \gls{BEV} information of the environment.
-	\item The dataset provides enough diverse data to train and evaluate a network on.
-	\item The dataset contains traffic scene sequences, or provides means to easily generate them.
-	\item The sequences have enough frames per sequence and a frame rate that is suitable for capturing road user behavior and trajectories.
-	\item The sequences contain various traffic actors including vehicles and \glspl{VRU}.
+	\item The dataset provides enough diverse data to train and evaluate a network on. \cite{mehrabi2019survey} \cite{nordfjaern2014culture} \cite{torralba2011unbiased}
+	\item The dataset contains traffic scene sequences, or provides means to easily generate them. 
+	\item The sequences have enough frames per sequence and a frame rate that is suitable for capturing road user behavior and trajectories. \cite{chen2007review} \cite{lange2020attention}
+	\item The sequences contain various traffic actors including vehicles and \glspl{VRU}. \cite{mehrabi2019survey}
 	\item The dataset data, and any \gls{OGM} that can be generated from it, provides a resolution that is high enough to distinguish and to track \glspl{VRU}. 	
-	\item The sequences show a diversity in environmental properties, containing \glspl{VRU}, that may influence the generated \glspl{OGM} (e.g. urban vs rural, dense vs sparse traffic).
+	\item The sequences show a diversity in environmental properties, containing \glspl{VRU}, that may influence the generated \glspl{OGM} (e.g. urban vs rural, dense vs sparse traffic). \cite{mehrabi2019survey} \cite{nordfjaern2014culture} 
 	\item The dataset provides data, including ground truth, that is required for generating extended \gls{OGM} forms.
 	\item Results of other research using the dataset for generating and predicting \glspl{OGM} is available for comparison. 
 \end{enumerate}
 
 
-A total of ten datasets coming from three categories are found that contain ego-vehicle centered traffic scene sequences. Three datasets were created for a purpose that includes motion prediction. Five datasets were created for object detection purposes. The last two datasets were mainly created to research semantic segmentation on. All the datasets are recorded using a vehicle equipped with one or multiple sensors that drives through real traffic. \\
+A total of eleven datasets coming from three categories are found that contain ego-vehicle centered traffic scene sequences. Four datasets were created for a purpose that includes motion prediction. Five datasets were created for object detection purposes. The last two datasets were mainly created to research semantic segmentation on. All the datasets are recorded using a vehicle equipped with one or multiple sensors that drives through real traffic. \\
 
 To evaluate the datasets against the criteria, information about each dataset is gathered and put into a table (see table \ref{tab:datasets_overview}). The first criterion is met if the dataset contains 2D \gls{BEV} information about the environment. From the recording vehicle's point of view, having 2D \gls{BEV} information means that the vehicle should gather 3D sensor data which can be projected onto the 2D top view plane. The information about the sensors provides the data to evaluate this first criterion. The second criterion is tested using information about the number of categories and classes that are labelled in the datasets. If the dataset contains sequences of its sensor data, the third criterion is met. The fourth criterion is tested by evaluating the sampling frequency and length of the sequences. To test the fifth criterion, the number (and presence) of vehicles and pedestrians is evaluated. The information about the sensors is used to test the sixth criterion. The seventh criterion is evaluated by examining the diversity of sampling locations. Then, the eighth criterion is met if the dataset contains data to generate extended \glspl{OGM}. Finally, the ninth criterion is tested by evaluating whether there exists literature that generates \glspl{OGM} from the dataset and whether there is literature that uses those generated \glspl{OGM} for \gls{OGM} prediction. The evaluation and comparison of each dataset against the criteria is shown in table \ref{tab:datasets_criteria}. \\
 
@@ -35,31 +34,34 @@ The most interesting characteristics of each dataset are highlighted below in th
 
 
 \subsection{Tracking and Motion prediction Datasets} \label{subsec:data_track_mot}
-The following three datasets are obtained for tracking or motion prediction purposes. The \gls{STIP} dataset \cite{liu2020spatiotemporal}, the Argoverse dataset \cite{chang2019argoverse} and the RoboCar dataset \cite{robotcardatasetijrr}. \\
+The following four datasets are obtained for tracking or motion prediction purposes. The \gls{STIP} dataset \cite{liu2020spatiotemporal}, the Argoverse dataset \cite{chang2019argoverse}, the RobotCar dataset \cite{robotcardatasetijrr}, and the Waymo Open Motion dataset \cite{ettinger2021large}. \\
 
 The \gls{STIP} dataset \cite{liu2020spatiotemporal} is obtained using three cameras (left, front and right) with a 1216x1936 resolution at 20 Hz positioned on the recording vehicle. An example of the \gls{STIP} dataset's camera images is shown in figure \ref{fig:dat_stip}. However, these are not stereo cameras, so no 3D information is obtained. This dataset does therefore not meet the first criterion. 3D information can be computed from the monocular images using monocular unsupervised depth estimation techniques \cite{godard2017unsupervised}. However, this probably will not yield as reliable results compared to stereo vision data and the time spent on generating 3D data could also be spent on training a network using a dataset that does contain 2D \gls{BEV} information. A remarkable property of this dataset is that the sampling frequency of the camera images is 20 Hz. When comparing the \gls{STIP} dataset's sampling rate to the other dataset's rates (see table \ref{tab:datasets_overview}, it can be seen that this dataset, together with the \gls{ECP2.5D} \cite{braun2020ecp2} dataset has the highest sampling rate. \\
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Figures/Datasets/STIP_Dataset}
-	\caption{This image shows an overview of the \gls{STIP} \cite{liu2020spatiotemporal} dataset's camera images. Pedestrians are annotated with cross (red) not-cross (green) labels.  \cite{liu2020spatiotemporal}}  
+	\caption{An overview of the \gls{STIP} \cite{liu2020spatiotemporal} dataset's camera images. Pedestrians are annotated with cross (red) not-cross (green) labels.  \cite{liu2020spatiotemporal}}  
 	\label{fig:dat_stip}
 \end{figure}
 
 The Argoverse dataset \cite{chang2019argoverse} is recorded in only two cities in one country. It therefore contains little geographic diversity compared to the \gls{ECP2.5D} \cite{braun2020ecp2} and Cityscapes \cite{cordts2016cityscapes} datasets. On the other side, the Argoverse dataset \cite{chang2019argoverse} contains 333K 5-second sequences and labels 17 different classes, including vehicles, pedestrians and cyclists. Furthermore, \cite{roddick2020predicting} has already used this dataset to generate \glspl{OGM}. Examining \cite{roddick2020predicting}'s research could therefore speed up the \gls{OGM} generation time. \\
 
-The RoboCar dataset \cite{robotcardatasetijrr} is collected in only one city and no data is labeled. It is therefore not a diverse dataset compared to the other datasets. The dataset contains 360-second sequences, but of an unkown number. What is beneficial about this dataset is that \cite{dequaire2018deep} and \cite{wang2020l2r} used it for \gls{OGM} generation before, where \cite{dequaire2018deep} also performed \gls{OGM} prediction.
+The RobotCar dataset \cite{robotcardatasetijrr} is collected in only one city and no data is labeled. It is therefore not a diverse dataset compared to the other datasets. The dataset contains 360-second sequences, but of an unkown number. What is beneficial about this dataset is that \cite{dequaire2018deep} and \cite{wang2020l2r} used it for \gls{OGM} generation before, where \cite{dequaire2018deep} also performed \gls{OGM} prediction. \\
+
+% TODO: HIGHLIGHT PARAGRAPH
+The Waymo Open Motion dataset \cite{ettinger2021large} (short Waymo-M) is currently one of the biggest motion forecasting datasets. It contains more than 100M 20-second traffic sequences with together 534M annotated pedestrians, vehicles, and cyclists. Furthermore, the dataset includes static map features such as lane centers, road edges, cross walks, and traffic signal states. However, it does not contain any raw sensor data to generate \glspl{OGM} from. Instead, only processed data from object detection and semantic labeling is available in the dataset. The downside is that occupied regions in the raw sensor data that are not recognized by the applied object detection and labeling methods will be lost in this process. The available static map data, together with the annotated road users can be used to generate rasterized \gls{BEV} raster images of the traffic scenes. Those images can be considered deterministic \glspl{OGM} (having grid cell states of either occupied or empty), which contain semantic information about the annotated objects and the road lay-out. The downside of this deterministic representation is that it contains no uncertainty information about the grid cells' occupancy.
 
 
 \subsection{Object Detection Datasets} \label{subsec:data_ob_det}
-This subsection will discuss five datasets that were originally obtained for object detection purposes. The \gls{ECP2.5D} dataset \cite{braun2020ecp2}, the \gls{BDD100K} dataset \cite{yu2020bdd100k}, the \gls{KITTI} dataset \cite{geiger2012we}, the nuScenes dataset \cite{caesar2020nuscenes}, and the Waymo Open dataset \cite{sun2020scalability}. \\
+This subsection will discuss five datasets that were originally obtained for object detection purposes. The \gls{ECP2.5D} dataset \cite{braun2020ecp2}, the \gls{BDD100K} dataset \cite{yu2020bdd100k}, the \gls{KITTI} dataset \cite{geiger2012we}, the nuScenes dataset \cite{caesar2020nuscenes}, and the Waymo Open Perception dataset \cite{sun2020scalability}. \\
 
 The \gls{ECP2.5D} dataset \cite{braun2020ecp2} contains 15-second sequences in which seven different classes are labeled. This is average compared to the other datasets. This dataset is remarkable because it is recorded in 31 cities in 12 countries which makes this the most diverse datatset regarding geographic locations. Also, the sampling frequency of the sequences is 20 Hz, which is the highest together with the \gls{STIP} dataset \cite{liu2020spatiotemporal}. An example of the camera and LiDAR data of the \gls{ECP2.5D} dataset \cite{braun2020ecp2} is shown in figure \ref{fig:dat_ecp}. \\
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{Figures/Datasets/ECP_Dataset}
-	\caption{This image shows an example of how the \gls{ECP2.5D} \cite{braun2020ecp2} dataset contains camera and LiDAR data in which pedestrians are annotated.}  
+	\caption{An example of how the \gls{ECP2.5D} \cite{braun2020ecp2} dataset contains camera and LiDAR data in which pedestrians are annotated.}  
 	\label{fig:dat_ecp}
 \end{figure}
 
@@ -72,11 +74,11 @@ For the nuScenes dataset \cite{caesar2020nuscenes}, a LiDAR that can generate a 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.6\linewidth]{Figures/Datasets/NuScenes_Dataset}
-	\caption{This image shows an example of the images of the six cameras from the nuScenes dataset \cite{caesar2020nuscenes}. The images are overlayed with the semantic segmented LiDAR data.}  
+	\caption{An example of the images of the six cameras from the nuScenes dataset \cite{caesar2020nuscenes}. The images are overlayed with the semantic segmented LiDAR data.}  
 	\label{fig:dat_nuscenes}
 \end{figure}
 
-The Waymo Open dataset \cite{sun2020scalability} (in short Waymo), was originally recorded in 3 cities (Phoenix, San Francisco, and Mountain View) and later extended with another 3 cities (Los Angeles, Detroit, and Seattle). This makes the dataset average on geographic diversity. Besides object detection, the Waymo dataset \cite{sun2020scalability} also focuses on data for motion prediction. It now contains 103K 20 second sequences at 10 Hz (together over 20M frames and 574 hours of data). It contains 10.8M objects with tracking IDs, labels for three object classes (vehicles, pedestrians, and cyclist), and 3D bounding boxes of each of those objects. Each sequence contains 3D map data and is further broken down into 9 second windows (1 second of historic frames and 8 seconds of future frames) with 5 second overlap for motion prediction purposes. This makes the dataset one of the largest datasets. Moreover, \cite{lange2020attention} and \cite{toyungyernsub2020double} used the Waymo dataset to generate and predict \glspl{OGM}, so there is research to compare prediction methods with using the Waymo dataset \cite{sun2020scalability}.
+The Waymo Open Perception dataset \cite{sun2020scalability} (in short Waymo-P), was originally recorded in 3 cities (Phoenix, San Francisco, and Mountain View). This makes the dataset average on geographic diversity. It contains 1150 20 second sequences at 10 Hz. It contains 10.8M objects with tracking IDs, labels for four object classes (vehicles, pedestrians, cyclists, and signs), and 3D bounding boxes of each of those objects. Moreover, \cite{lange2020attention} and \cite{toyungyernsub2020double} used the Waymo-P dataset to generate and predict \glspl{OGM}, so there is research to compare prediction methods with using the Waymo-P dataset \cite{sun2020scalability}.
 
 
 \subsection{Semantic Segmentation Datasets} \label{subsec:data_sem_seg}
@@ -87,56 +89,60 @@ Apolloscape \cite{huang2019apolloscape} is a dataset which is collected for the 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.6\linewidth]{Figures/Datasets/Cityscapes_Dataset}
-	\caption{This image shows an example of the Cityscapes \cite{cordts2016cityscapes} dataset. The camera image is semantically segmented. Each object class in the image is given a different label (color).}  
+	\caption{An example of the Cityscapes \cite{cordts2016cityscapes} dataset. The camera image is semantically segmented. Each object class in the image is given a different label (color).}  
 	\label{fig:dat_cityscapes}
 \end{figure}
 
 The Cityscapes dataset \cite{cordts2016cityscapes} is recorded in 50 different cities, primarily in Germany but also in neighboring countries. From 27 cities, 5000 images are selected for dense pixel-level annotation. Annotations are done on every 20th frame of a 30-frame video sequence. For the remaining 23 cities, coarse annotation is performed on a single image every 20 seconds or 20 meters driving distance (whichever comes first). This yields another 20K annotated images. An example an annotated image from the dataset is shown in figure \ref{fig:dat_cityscapes}. 30 classes are annotated which are grouped into 8 categories. The dataset contains 24.4K annotated pedestrians and 41K vehicles. Humans and vehicles are also annotated on an instance level. Therefore, this dataset is diverse regarding both geographic locations and traffic participants. The dataset has also been used to generate \glspl{OGM} by \cite{hehn2021fast}. The downside of this dataset is that the number of sequences is not known, besides that it is a 'large set'. 
 
-\subsection{What dataset is most suitable to generate \gls{OGM} sequences for \gls{OGM} prediction?} \label{subsec:data_con}
-
+%TODO: Waymo-M data is new, also the conclusion is updated
+\subsection{What is a suitable dataset to generate \gls{OGM} sequences for \gls{OGM} prediction from among current traffic scene datasets?} \label{subsec:data_con}
 Table \ref{tab:datasets_overview} shows an overview of the datasets that are discussed in the previous subsections. Based on the properties of each dataset it is evaluated how well they meet the criteria that were set at the beginning of this chapter. If a criterion is met, the score of the dataset goes up by 1 point. If the criterion is met partially, or in average quality compared to the other datasets, the score goes up by 0.5 point. If a criterion is not met, or if it is met in a bad quality compared to other datasets, the dataset will not get any points for that criterion. Also, if information about a criterion is not found or not available, no points are given to the criterion. Table \ref{tab:datasets_criteria} shows an overview of how well each datasets scores per criterion. More information about the symbols and what score is linked to them is written below the table. \\
 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{Figures/Datasets/Waymo_Dataset}
-		\caption{This image shows an overview of the labeled vehicles and lane markings of the Waymo \cite{sun2020scalability} dataset.}
+		\includegraphics[width=\linewidth]{Figures/Datasets/WaymoP_Dataset}
+		\caption{An overview of the annotated objects of the Waymo-P \cite{sun2020scalability} dataset.}
 		\label{fig:dat_waymo_1}
 	\end{subfigure} \hspace{0.1\textwidth}
 	\begin{subfigure}[t]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{Figures/Datasets/Waymo_Dataset2}
-		\caption{This image shows a front camera image of the Waymo \cite{sun2020scalability} dataset.}
+		\includegraphics[width=\linewidth]{Figures/Datasets/WaymoP_Dataset2}
+		\caption{A front camera image of the Waymo-P \cite{sun2020scalability} dataset.}
 		\label{fig:dat_waymo_2}
 	\end{subfigure}
-	\caption{Two examples of the Waymo \cite{sun2020scalability} dataset.}
+	\caption{Two examples of the Waymo-P \cite{sun2020scalability} dataset.}
 	\label{fig:dat_waymo_both}
 \end{figure}
 
-With a score of 7.5, the Waymo \cite{sun2020scalability} dataset (shown in figure \ref{fig:dat_waymo_both}) is the most suitable dataset to generate \gls{OGM} sequences for \gls{OGM} prediction. While the diversity of the Waymo dataset is average, compared to the other datasets, and there is no (available) data to extend the \gls{OGM} form, the Waymo dataset meets all other criteria in good quality which sums up to the score of 7.5. Other suitable datasets on the second and shared third places are the Cityscapes \cite{cordts2016cityscapes}, Argoverse \cite{chang2019argoverse} and NuScenes \cite{caesar2020nuscenes} datasets with a score of 7.0, 6.5 and 6.5 respectively. Unlike the Waymo dataset, the Cityscapes dataset provides pixel-level semantic segmentation data and the Nuscenes dataset provides velocity data and semantic LiDAR data. In the case this additional data is desired for research on a specific \gls{OGM} prediction method, the Cityscapes or Nuscenes datasets can be more suitable to use than the Waymo dataset. Also, conveniently, for the four best scoring datasets there is literature available that provides code to generate \glspl{OGM} from the data. These sources can be found in table \ref{tab:datasets_overview}.  
+Given the highest score of 7.5 and given that this dataset has been used for \gls{OGM} prediction before, the Waymo-P \cite{sun2020scalability} dataset (shown in figure \ref{fig:dat_waymo_both}) is a suitable dataset to generate \gls{OGM} sequences for \gls{OGM} prediction. While the diversity of the Waymo-P dataset is average compared to the other datasets and there is no (available) data to extend the \gls{OGM} form, the Waymo-P dataset meets all other criteria in good quality which sums up to the score of 7.5. Other suitable datasets on the shared second (score of 7.0) and shared third (score of 6.5) places are the Waymo-M \cite{ettinger2021large} and Cityscapes \cite{cordts2016cityscapes}, Argoverse \cite{chang2019argoverse} and NuScenes \cite{caesar2020nuscenes} datasets. Unlike the Waymo-P dataset, the Waymo-M, Cityscapes and Nuscenes datasets provide semantic data where the Nuscenes dataset provides additional velocity data. In the case this additional data is desired for research on a specific \gls{OGM} prediction method, the Waymo-M, Cityscapes or Nuscenes datasets can be more suitable to use than the Waymo-P dataset. Also, conveniently, for four of the best scoring datasets (not Waymo-M), there is literature available that provides code to generate \glspl{OGM} from the data. These sources can be found in table \ref{tab:datasets_overview}. Lastly, important to note is that the Waymo-M dataset does not contain any raw sensor data, so if it is required to generate \glspl{OGM} which contain probability data for each grid cell, this dataset would not be suitable. The remaining datasets are considered less suitable to generate \glspl{OGM} from since their scores are lower than the top 5 datasets. The low scores are mostly due to a lack of information about the dataset or due to insufficient data.
 
+\afterpage{%
+	\clearpage% Flush earlier floats (otherwise order might not be correct)
+	\thispagestyle{empty}% empty page style (?)
+	\begin{landscape}
 \begin{table}[h!]
 	\centering
 	\resizebox{\linewidth}{!}{%
-		\begin{tabular}{lllllllllll} 
+		\begin{tabular}{llllllllllll} 
 			\toprule
-			& \textbf{STIP \cite{liu2020spatiotemporal}} & \textbf{Argoverse \cite{chang2019argoverse}} & \textbf{ECP2.5D \cite{braun2020ecp2}} & \textbf{BDDK100 \cite{yu2020bdd100k}} & \textbf{KITTI \cite{geiger2012we}} & \textbf{NuScenes \cite{caesar2020nuscenes}} & \textbf{Waymo \cite{sun2020scalability}} & \textbf{Apolloscape \cite{huang2019apolloscape}} & \textbf{Cityscapes \cite{cordts2016cityscapes}} & \textbf{RoboCar \cite{robotcardatasetijrr}} \\ 
+			& \textbf{STIP \cite{liu2020spatiotemporal}} & \textbf{Argoverse \cite{chang2019argoverse}} & \textbf{ECP2.5D \cite{braun2020ecp2}} & \textbf{BDDK100 \cite{yu2020bdd100k}} & \textbf{KITTI \cite{geiger2012we}} & \textbf{NuScenes \cite{caesar2020nuscenes}} & \textbf{Waymo-P \cite{sun2020scalability}} & \textbf{Waymo-M \cite{ettinger2021large}} & \textbf{Apolloscape \cite{huang2019apolloscape}} & \textbf{Cityscapes \cite{cordts2016cityscapes}} & \textbf{RobotCar \cite{robotcardatasetijrr}} \\ 
 			\hline
-			\textbf{1} & \xmark & \cmark & \cmark & \xmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
-			\textbf{2} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{+} & \textbf{$-$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$-$} & \textbf{+} & \textbf{$-$} \\
-			\textbf{3} & \textbf{$\pm$} & \textbf{+} & \textbf{$\pm$} & \textbf{+} & \textbf{$-$} & \textbf{+} & \textbf{+} & U & U & U \\
-			\textbf{4} & \textbf{+} & \textbf{+} & \textbf{+} & U & \textbf{+} & \textbf{$-$} & \textbf{+} & U & \textbf{+} & \textbf{+} \\
-			\textbf{5} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & U \\
-			\textbf{6} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
-			\textbf{7} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{+} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} \\
-			\textbf{8} & N & N & N & Pixel Semantics & N & Velocity data, LiDAR Semantics & N & Pixel Semantics & Pixel Semantics & N \\
-			\textbf{9} & N & Only OGM gen & N & N & OGM gen and pred & Only OGM gen & OGM gen and pred & N & Only OGM gen & OGM gen and pred \\
-			\textbf{Scores} & 4.5 & \textbf{6.5} & 5.5 & 5.5 & 5.5 & \textbf{6.5} & \textbf{7.5} & 4.5 & \textbf{7.0} & 4.5 \\
+			\textbf{1} & \xmark & \cmark & \cmark & \xmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+			\textbf{2} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{+} & \textbf{$-$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$-$} & \textbf{+} & \textbf{$-$} \\
+			\textbf{3} & \textbf{$\pm$} & \textbf{+} & \textbf{$\pm$} & \textbf{+} & \textbf{$-$} & \textbf{+} & \textbf{+} & \textbf{+} & U & U & U \\
+			\textbf{4} & \textbf{+} & \textbf{+} & \textbf{+} & U & \textbf{+} & \textbf{$-$} & \textbf{+} & \textbf{+} & U & \textbf{+} & \textbf{+} \\
+			\textbf{5} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & U \\
+			\textbf{6} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+			\textbf{7} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{+} & \textbf{+} & \textbf{$\pm$} & \textbf{$\pm$} & \textbf{$\pm$} \\
+			\textbf{8} & N & N & N & Pixel Semantics & N & Velocity data, LiDAR Semantics & N & Road Semantics & Pixel Semantics & Pixel Semantics & N \\
+			\textbf{9} & N & Only OGM gen & N & N & OGM gen and pred & Only OGM gen & OGM gen and pred & N & N & Only OGM gen & OGM gen and pred \\
+			\textbf{Scores} & 4.5 & \textbf{6.5} & 5.5 & 5.5 & 5.5 & \textbf{6.5} & \textbf{7.5} & \textbf{7.0} & 4.5 & \textbf{7.0} & 4.5 \\
 			\bottomrule
 		\end{tabular}
 	}
 	\caption{
-		The table shows for each dataset how well it scores per criterion. The scores are based on the information in table \ref{tab:datasets_overview}. The following symbols are used to evaluate each criterion: 
+		For each dataset, it is shown how well it scores per criterion. The scores are based on the information in table \ref{tab:datasets_overview}. The following symbols are used to evaluate each criterion: 
 		\textbf{+:} Good, \textbf{$\pm$:} Average, \textbf{$-$:} Bad, \textbf{U:} Unknown: \textbf{N:} None/Not available/Not found, \textbf{\cmark:} Yes, \textbf{\xmark:} No. \\\hspace{\textwidth} 
 		At the bottom row, each dataset is given a score based on which symbol is given at the evaluation, and whether there is useful information found for criteria 8 and 9. A '\textbf{+}', a '\textbf{\cmark}', 'OGM gen and pred', and any available additional data for an extended OGM form provide 1 point, an '\textbf{$\pm$}' and 'only OGM gen' provides 0.5 points, and the '\textbf{\xmark}', '\textbf{$-$}', 'U', and 'N' provide 0 points.  
 		Below is the list of criteria. \\\hspace{\textwidth} 	
@@ -151,7 +157,10 @@ With a score of 7.5, the Waymo \cite{sun2020scalability} dataset (shown in figur
 		\textbf{9.} Results of other research using the dataset for generating and predicting \glspl{OGM} is available for comparison.}
 	\label{tab:datasets_criteria}
 \end{table}
+	\end{landscape}
+}
 
+%%
 
 \afterpage{%
 	\clearpage% Flush earlier floats (otherwise order might not be correct)
@@ -159,7 +168,7 @@ With a score of 7.5, the Waymo \cite{sun2020scalability} dataset (shown in figur
 	\begin{landscape}
 		\begin{longtable}{m{4em}m{2em}m{7em}m{7em}m{5em}m{2em}m{5em}m{7em}m{4em}m{2em}m{2em}m{5em}m{1em}m{1em}} 
 			\toprule
-			\rotatebox{90}{\textbf{Dataset}} & \rotatebox{90}{\textbf{Year}} & \multicolumn{3}{c}{\rotatebox{90}{\textbf{Sensors}}} & \rotatebox{90}{\textbf{Sampling Frequency}} & \rotatebox{90}{\textbf{Diversity of Locations}} & \rotatebox{90}{\textbf{Dataset size}} & \rotatebox{90}{\textbf{Diversity of labels}} & \rotatebox{90}{\textbf{\# Pedestrians}} & \rotatebox{90}{\textbf{\# Vehicles}} & \rotatebox{90}{\textbf{Extended OGMs}} & \rotatebox{90}{\textbf{OGM generation method}} & \rotatebox{90}{\textbf{OGM prediction comparison}} \endfirsthead
+			\rotatebox{90}{\textbf{Dataset}} & \rotatebox{90}{\textbf{Year}} & \multicolumn{3}{c}{\rotatebox{90}{\textbf{Sensors}}} & \rotatebox{90}{\textbf{Sampling Frequency}} & \rotatebox{90}{\textbf{Location Diversity}} & \rotatebox{90}{\textbf{Dataset size}} & \rotatebox{90}{\textbf{Label Diversity}} & \rotatebox{90}{\textbf{\# Pedestrians}} & \rotatebox{90}{\textbf{\# Vehicles}} & \rotatebox{90}{\textbf{Extended OGMs}} & \rotatebox{90}{\textbf{OGM generation}} & \rotatebox{90}{\textbf{OGM prediction}} \endfirsthead
 			\midrule
 			\textbf{STIP \cite{liu2020spatiotemporal}} & 2020 & - & 3 RGB cameras of res 1216x1936  (20 Hz) & - & 20 Hz & 1 country, 8 cities, dense urban areas & 556 sequences, \textasciitilde{}2h of recording, \textasciitilde{}150K frames & 2 classes (pedestrian, vehicle) & \textasciitilde{}3K & - & - & - & - \\
 			\textbf{Argoverse \cite{chang2019argoverse}} & 2019 & 2 VLP-32 LiDARs with 200m range (10 Hz) & 7 RGB cameras in 360 deg setup of res 1920x1200 (30 Hz) and 2 in stereo view of res  2056x2464 (5 Hz) & GPS/ Odometry sensor & 10 Hz & 1 country, 2 cities, dense urban areas & \textasciitilde{}333K 5s sequences, 1006h of recording, spanning \textasciitilde{}290km & 17 classes & \textasciitilde{}1.5K & \textasciitilde{}8K & - & \cite{roddick2020predicting} & - \\
@@ -167,12 +176,13 @@ With a score of 7.5, the Waymo \cite{sun2020scalability} dataset (shown in figur
 			\textbf{BDDK100 \cite{yu2020bdd100k}} & 2020 & - & 1 camera of res 1280x720 (30 Hz) & GPS/IMU & - & (mostly) 1 country, 4 cities, dense urban areas & \textasciitilde{}100K 40s sequences & 3 categories, 20 classes & \textasciitilde{}129K & \textasciitilde{}1M & Pixel-level semantic segmentation & - & - \\
 			\textbf{KITTI \cite{geiger2012we}} & 2012 & Velodyne HDL-64 LiDAR with 100m range (10 Hz) & 4 cameras (2 color 2 grayscale) of res 1392x512 (10 Hz) & GPS/IMU & 10 Hz & 1 country, 1 city, dense urban areas & 22 sequences & 2 categories, 8 classes & \textasciitilde{}9.4K & \textasciitilde{}100K & - & \cite{itkina2019dynamic} \cite{mohajerin2019multi} \cite{lange2020attention} & \cite{itkina2019dynamic} \cite{mohajerin2019multi} \cite{lange2020attention} \\
 			\textbf{NuScenes \cite{caesar2020nuscenes}} & 2019 & 32 beam LiDAR 1.4M points/s (20 Hz) + 5 Radars with 250m range (13 Hz) & 6 cameras of res 1600x900 cameras (12 Hz) & GPS/IMU, CAN bus data & 2 Hz & 2 countries, 2 cities, dense urban areas & 1000 20s sequences & 23 classes, 8 attributes & \textasciitilde{}200K & \textasciitilde{}500K & velocity information from Radar with 0.1km/h accuracy and LiDAR semantics & \cite{roddick2020predicting} \cite{loukkal2021driving} & - \\
-			\textbf{Waymo \cite{sun2020scalability}} & 2020 & 5 LiDAR sensors (1 mid range, 4 short range) & 5 cameras (3 front of res 1920x1280 and 2 side of res 1920x1014) & - & 10 Hz & 1 country, 6 cities, urban and suburban areas & 103K 20s sequences & 3 classes & \textasciitilde{}2.8M & \textasciitilde{}6.1M & - & \cite{lange2020attention} \cite{toyungyernsub2020double} & \cite{lange2020attention} \cite{toyungyernsub2020double} \\
+			\textbf{Waymo-P \cite{sun2020scalability}} & 2020 & 5 LiDAR sensors (1 mid range, 4 short range) & 5 cameras (3 front of res 1920x1280 and 2 side of res 1920x1014) & - & 10 Hz & 1 country, 3 cities, urban and suburban areas & 1150 20s sequences & 4 classes & \textasciitilde{}2.8M & \textasciitilde{}6.1M & - & \cite{lange2020attention} \cite{toyungyernsub2020double} & \cite{lange2020attention} \cite{toyungyernsub2020double} \\
+			\textbf{Waymo-M \cite{ettinger2021large}} & 2021 & - & - & - & 10 Hz & 1 country, 6 cities, urban and suburban areas & 104K 20s sequences, 574h of recording & 3 classes & - & - & - & - & - \\
 			\textbf{Apolloscape \cite{huang2019apolloscape}} & 2018 & 2 VUX-1HA LiDARs with 420m range & 1 VMX-CS6 camera system with 2 cameras of res 3384x2710 (no depth information) & IMU/GNSS & - & 1 country, dense urban areas & - & 5 categories, 35 classes, additional 28 kinds of lane markings & \textasciitilde{}543K & \textasciitilde{}1.99M & Pixel-level semantic segmentation & - & - \\
 			\textbf{Cityscapes \cite{cordts2016cityscapes}} & 2020 & - & 1 stereo camera of res 1920x1080 (OnSemi AR0331) (17 Hz) & GPS, outside temperature, in-vehicle odometry sensors & 17 Hz & 1 country, 50 cities, dense urban areas & A 'large set' of sequences & 8 categories, 30 classes & \textasciitilde{}24.4K & \textasciitilde{}41K & Pixel-level semantic segmentation & \cite{hehn2021fast} & - \\
-			\textbf{RoboCar \cite{robotcardatasetijrr}} & 2016 & 2 SICK LMS-151 2D LiDARs with 50m range (50 Hz) and 1 SICK LD-MRS 3D LiDAR with 50m range (12.5 Hz) & 4 cameras (1 front of res 1280x960 at 16 Hz, 3 for sides and rear of res 1024x1024 at 11.1 Hz) & GPS/INS & - & 1 country, 1 city, urban area & 360s sequences of unknown amount & No labels & - & - & - & \cite{dequaire2018deep} \cite{wang2020l2r} & \cite{dequaire2018deep} \\
+			\textbf{RobotCar \cite{robotcardatasetijrr}} & 2016 & 2 SICK LMS-151 2D LiDARs with 50m range (50 Hz) and 1 SICK LD-MRS 3D LiDAR with 50m range (12.5 Hz) & 4 cameras (1 front of res 1280x960 at 16 Hz, 3 for sides and rear of res 1024x1024 at 11.1 Hz) & GPS/INS & - & 1 country, 1 city, urban area & 360s sequences of unknown amount & No labels & - & - & - & \cite{dequaire2018deep} \cite{wang2020l2r} & \cite{dequaire2018deep} \\
 			\bottomrule
-		\caption{This table shows an overview of the datasets that are most likely to be suitable for \gls{OGM} prediction purposes.}
+		\caption{An overview of the datasets that are most likely to be suitable for \gls{OGM} prediction purposes.}
 		\label{tab:datasets_overview}	
 		\end{longtable}	
 	\end{landscape}
@@ -181,30 +191,73 @@ With a score of 7.5, the Waymo \cite{sun2020scalability} dataset (shown in figur
 %%
 
 
-
 \newpage
 
 \section{Metrics} \label{sec:metrics}
 
 \glspl{AV} can have collision avoidance systems that make use of traffic scene predictions to estimate whether the ego-vehicle will collide with any of the surrounding traffic participants. Based on these systems the \gls{AV} can make decisions to drive as safe as possible by preventing or mitigating collisions. For example, if a collision is predicted, the ego-vehicle can decide to adjust its velocity to prevent or mitigate the collision, or it will decide to perform an evasive maneuver \cite{annell2016probabilistic} \cite{wang2019crash}. \cite{annell2016probabilistic}'s system has even shown to be robust to noise in the environment representation. However, due to prediction errors, such as artifacts or displacement errors of traffic participants, the \gls{AV} might make the wrong decisions (e.g. perform an evasive maneuver when in reality there is no imminent collision, or fail to perform an evasive maneuver when there is actually a collision risk). This can be dangerous for the \gls{AV} and its surroundings. Besides for the task of collision avoidance, prediction of an \gls{AV}'s surroundings can also improve the efficiency and safety of motion planning by \glspl{AV} in general. Ensuring safe motion planning means that no (additional) dangerous situations are caused when the \gls{AV} executes a path that is planned in the \gls{OGM} predictions, compared to a path that is planned in the ground truth \gls{OGM}. So, for the safety of \glspl{AV} and its surroundings, good predictions are important. Since this literature study focuses on \gls{OGM} predictions, a metric is desired that compares the predicted \glspl{OGM} with the ground truth \glspl{OGM}. \\
 
-The quantitative evaluation of \gls{OGM} prediction methods depends highly on what metric is used to assess a method's performance. The metric determines which errors are considered and how much they weigh in the evaluation. What the best metric is for \gls{OGM} prediction is therefore investigated in this chapter. To ensure safety, a metric is desired to meet the following demands. The more similar a prediction is to the ground truth, the better the metric should score the prediction. Also, global errors such as noise do not affect robust \gls{AV} motion planning systems. Therefore, global errors should be weighed less in the metric score than local errors, such as artifacts or displacement errors. Then, prediction errors that are more likely to cause the \gls{AV} to perform dangerous maneuvers, should have a worse score compared to prediction errors that are likely harmless. Furthermore, \glspl{AV} have less time to correct their paths when there are large displacement errors or errors close to the \gls{AV}. So, these errors should be considered worse than small displacement errors or errors further from the \gls{AV}. Moreover, if there are artifacts, deletions or additions of occupied clusters, in the predictions, the \gls{AV} might perform dangerous confronting or evasive maneuvers respectively. Therefore, deletions and additions should be penalized more than displacements. These demands result in the following list of criteria that a metric must meet in order to evaluate an \gls{OGM} method that ensures that safer predictions are considered better.
-    
+The quantitative evaluation of \gls{OGM} prediction methods depends highly on what metric is used to assess a method's performance. The metric determines which errors are considered and how much they weigh in the evaluation. What the best metric is for \gls{OGM} prediction is therefore investigated in this chapter.
+However, there is (almost) no literature on what properties constitute a good metric for \gls{OGM} prediction methods. What literature stresses, is that the (predictive) systems in \glspl{AV} must improve the safety of traffic and ensure safe behavior of the \gls{AV}. Safe behavior consists of avoiding or mitigating collisions \cite{kaempchen2009situation} \cite{annell2016probabilistic}. To execute this safe behavior, the \gls{AV} must accurately sense or predict its environment \cite{mitra2018towards} \cite{themann2015impact} \cite{annell2016probabilistic}. From this reasoning, one can state that \gls{OGM} predictions must be evaluated based on their accuracy of the environment representation and the safety of the \gls{AV}'s behavior that results from the them. \cite{gandhi2007pedestrian} states that it is important to evaluate pedestrian protection systems that ensure safety, such as pedestrian collision prediction, using standardized performance metrics. However, no metric criteria are mentioned which constitute a good metric. Because of the lack of literature about metric criteria for \gls{OGM} prediction, this literature review devises the criteria based on the assurance of traffic safety. \\
+
+To ensure safety, a metric is desired to meet the following demands. The more similar a prediction is to the ground truth, the better the metric should score the prediction. Also, global noise errors do not affect robust \gls{AV} motion planning systems. Therefore, global noise errors should be weighed less in the metric score than local deletion or addition errors. Then, prediction errors that are more likely to cause the \gls{AV} to perform dangerous maneuvers, should have a worse score compared to prediction errors that are likely harmless. Furthermore, \glspl{AV} have less time to correct their paths when there are large displacement errors or errors close to the \gls{AV}. So, these errors should be considered worse than small displacement errors or errors further from the \gls{AV}. Moreover, if there are artifacts, deletions or additions of occupied clusters, in the predictions, the \gls{AV} might perform dangerous confronting or evasive maneuvers respectively. Therefore, deletions and additions should be penalized more than displacements. These demands result in the following list of criteria that a metric must meet in order to evaluate an \gls{OGM} method that ensures that safer predictions are considered better. Figure \ref{fig:met_crit} supports the criteria with images.
+
+% TODO: Below is updated: criteria
 \begin{enumerate}
-	\item The metric can evaluate the \gls{OGM} as a whole.
-	\item The metric can evaluate the \gls{OGM} on local and on global scale.
-	\item The metric negatively weighs small displacements less than big displacements. 
-	\item The metric negatively weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.
-	\item The metric negatively weighs additions and deletions more than displacements.
+	\item \textit{The metric considers the whole \gls{OGM} in its evaluation.} To compare \glspl{OGM}, it is important that the loss function considers each grid cell of the \gls{OGM} in its evaluation.
+	\item \textit{The metric weighs local deletion or addition errors more than global noise errors.} This criterion demands that a metric must differentiate between local deletion or addition errors (e.g. a local deletion of a pedestrian in figure \ref{fig:met_crit_lerr}) and global noise errors (e.g. noise in figure \ref{fig:met_crit_gerr}). If the number of erroneous grid cells in the form of noise is equal to that of a deletion or addition error, then the latter should be weighed more than the former. It is expected that an \gls{AV} is robust enough to safely navigate given a noise environment representation, but not through an environment representation in which not all objects match with reality. 
+	\item \textit{The metric weighs big displacement errors more than small displacement errors.} This criterion states that big displacement errors (e.g. in figure \ref{fig:met_crit_bdisp} where the pedestrian is erroneously predicted far from the center vehicle's pathway) should weigh more than small displacement errors (e.g. in figure \ref{fig:met_crit_sdisp} where the pedestrian is erroneously predicted on a slightly different place, but is still in the center vehicle's pathway). This is because small displacement errors are expected to result in less deviating and unsafe behavior of \glspl{AV} compared to the behavior given the ground truth, than big displacements.
+	\item \textit{The metric weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.} This criterion states that errors close to the \gls{AV} (e.g. figures \ref{fig:met_crit_lerr}, \ref{fig:met_crit_sdisp}, \ref{fig:met_crit_bdisp} show errors close to the center vehicle [\gls{AV}]) should weigh more than errors far from the \gls{AV} (e.g. figure \ref{fig:met_crit_edge} shows a displacement error of a vehicle at the edge of the \gls{OGM}), since an \gls{AV} has less time to adjust its behavior for errors that occur close to it compared to further placed errors.
+	\item \textit{The metric weighs additions and deletions more than displacements.} This criterion requires that the metric should weigh additions and deletions (adding or removing objects from the \gls{OGM}, for instance the deletion of a pedestrian in figure \ref{fig:met_crit_lerr}) more than displacement errors (e.g. figure \ref{fig:met_crit_sdisp}). This is because the \gls{AV} is expected to more safely adjust its behavior when there is a displacement error compared to when there is a deletion or addition
 \end{enumerate}
 
-A selection of five metrics that are used to measure the quality of \glspl{OGM} compared to the ground truth is made based on papers that research \gls{OGM} prediction methods. These metrics are evaluated in this section based on the criteria described in this chapter. First, the \glsfirst{MSE} is evaluated in section \ref{subsec:mse_met}. Second, the \glsfirst{SSIM} is evaluated in section \ref{subsec:ssim_met}. Third, section \ref{subsec:is_met} evaluates the \glsfirst{IS} metric. Fourth, secion \ref{subsec:froc_met} evaluates the F1 score and \glsfirst{ROC} metrics together, because those metrics are based on similar mathematical principles. Finally, section \ref{subsec:con_met} answers the sub-question: \airquote{\textit{What is the best quantitative metric to determine the accuracy of a predicted OGM?}}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/GT_colloquium}
+		\caption{Ground Truth}
+		\label{fig:met_crit_gt}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/local_error_colloquium}
+		\caption{Local Deletion Error}
+		\label{fig:met_crit_lerr}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/global_error_colloquium}
+		\caption{Global Noise Error}
+		\label{fig:met_crit_gerr}
+	\end{subfigure} \hfil
+	
+	\medskip
+	
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/small_disp_colloquium}
+		\caption{Small Displacement Error}
+		\label{fig:met_crit_sdisp}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/big_disp_colloquium}
+		\caption{Big Displacement Error}
+		\label{fig:met_crit_bdisp}
+	\end{subfigure} \hfil
+	\begin{subfigure}[t]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{Figures/Res_Prop/Edge_colloquium}
+		\caption{Edge Error}
+		\label{fig:met_crit_edge}
+	\end{subfigure} \hfil
+	\caption{Examples of various \gls{OGM} prediction errors and the ground truth. Black: Off-road obstacle, Red: Vehicle, Blue: Cyclist, Orange: Pedestrian.}
+	\label{fig:met_crit}
+\end{figure}
+
+A selection of five metrics that are used to measure the quality of \glspl{OGM} compared to the ground truth is made based on papers that research \gls{OGM} prediction methods. These metrics are evaluated in this section based on the criteria described in this chapter. First, the \glsfirst{MSE} is evaluated in section \ref{subsec:mse_met}. Second, the \glsfirst{SSIM} is evaluated in section \ref{subsec:ssim_met}. Third, section \ref{subsec:is_met} evaluates the \glsfirst{IS} metric. Fourth, secion \ref{subsec:froc_met} evaluates the F1 score and \glsfirst{ROC} metrics together, because those metrics are based on similar mathematical principles. Finally, section \ref{subsec:con_met} answers the sub-question: \airquote{\textit{What is a suitable quantitative metric to determine the accuracy of a predicted \gls{OGM} among the metrics used in current \gls{OGM} prediction literature?}}
 
 \subsection{\glsfirst{MSE}} \label{subsec:mse_met}
-The \glsfirst{MSE} metric is used by \cite{itkina2019dynamic}, \cite{lange2020attention}, and \cite{toyungyernsub2020double} to compare the \gls{OGM} predictions with the ground truth. \cite{lange2020attention} and \cite{toyungyernsub2020double} also use the \glsfirst{IS} metric which is discussed later in this chapter. The \gls{MSE} metric formula is shown in equation \ref{eq:mse}, where $I$ is an $m \times n$ \gls{OGM}, $K$ its prediction, and $i$ and $j$ the \gls{OGM} coordinates.
+The \glsfirst{MSE} metric is used by \cite{itkina2019dynamic}, \cite{lange2020attention}, and \cite{toyungyernsub2020double} to compare the \gls{OGM} predictions with the ground truth. \cite{lange2020attention} and \cite{toyungyernsub2020double} also use the \glsfirst{IS} metric which is discussed later in this chapter. The \gls{MSE} metric formula is shown in equation \ref{eq:mse}, where $Y$ is an $m \times n$ \gls{OGM}, $X$ its prediction, and $i$ and $j$ the \gls{OGM} coordinates.
 
 \begin{equation} \label{eq:mse}
-	MSE = \frac{1}{mn}\sum_{i=0}^{m-1}\sum_{j=0}^{n-1}[I(i,j)-K(i,j)]^2
+	MSE = \frac{1}{mn}\sum_{i=0}^{m-1}\sum_{j=0}^{n-1}[Y(i,j)-X(i,j)]^2
 \end{equation}
 
 The equation evaluates the predicted \gls{OGM} as a whole and sums up the square of each cell's difference in value compared to the ground truth. So, the higher \gls{MSE}, the more its cell's values differ from the ground truth on a global scale. \cite{toyungyernsub2020double}'s research shows that the \gls{MSE} increases with the prediction time horizon of the \gls{OGM}, which is expected because of the accumulation of prediction errors with every time step. Because of its simplicity, the \gls{MSE} is used to assess not only \glspl{OGM} but images in general. However, there are implicit assumptions when using the \gls{MSE} \cite{wang2009mean}. The main assumptions are that the \gls{MSE} treats spatial positions of the grid cells, the sign of the error, and the relationship between the prediction and the ground truth independently, while it treats each cell with equal importance. Therefore, the \gls{MSE} cannot recognize relations within an \gls{OGM}, consider context, or differentiate local errors from global errors. The \gls{MSE} would thus not be able to assess displacements, deletions or additions. It is, however, possible to give errors close to the \gls{OGM}'s center a higher weighting by multiplying those errors by a penalty factor.    
@@ -292,9 +345,9 @@ The F1 score and \gls{ROC}-curve evaluate an \gls{OGM} only on a global scale wh
 
 
 
-\subsection{What is the best quantitative metric to determine the accuracy of a predicted OGM?} \label{subsec:con_met}
+\subsection{What is a suitable quantitative metric to determine the accuracy of a predicted \gls{OGM} among the metrics used in current \gls{OGM} prediction literature?} \label{subsec:con_met}
 
-The evaluation of the criteria which a metric must meet to be suitable for \gls{OGM} prediction is shown in table \ref{tab:metrics}. Based on this chapter's information about the different metrics, the most suitable metrics are the \gls{SSIM} and \gls{IS} metrics. These metrics meet all the criteria. However, to determine whether the \gls{SSIM} is more suitable than the \gls{IS} metric, or whether there is another metric that is more suitable than the metrics from this chapter, more research should be done to investigate \gls{OGM} evaluation metrics. 
+The evaluation of the criteria which a metric must meet to be suitable for \gls{OGM} prediction is shown in table \ref{tab:metrics}. Based on this chapter's information about the different metrics, the suitable metrics are the \gls{SSIM} and \gls{IS} metrics. These metrics meet all the criteria. However, to determine whether the \gls{SSIM} is more suitable than the \gls{IS} metric, or whether there is another metric that is more suitable than the metrics from this chapter, more research should be done to investigate \gls{OGM} evaluation metrics. 
 
 \begin{table}
 	\centering
@@ -311,15 +364,14 @@ The evaluation of the criteria which a metric must meet to be suitable for \gls{
 			\bottomrule
 		\end{tabular}
 	}
-	\caption{This table gives an overview of the metrics that can be used to evaluate \gls{OGM} predictions. For each criterion (numbers 1 to 5), the table shows whether the metric meets it (\textbf{\cmark}) or not (\textbf{\xmark}). The criteria are as follows. 
+	\caption{An overview of the metrics that can be used to evaluate \gls{OGM} predictions. For each criterion (numbers 1 to 5), the table shows whether the metric meets it (\textbf{\cmark}) or not (\textbf{\xmark}). The criteria are as follows. 
 		\\\hspace{\textwidth} 
-		\textbf{1.} The metric can evaluate the \gls{OGM} as a whole.
-		\textbf{2.} The metric can evaluate the \gls{OGM} on local and on global scale.
-		\textbf{3.} The metric negatively weighs small displacements less than big displacements. 
-		\textbf{4.} The metric negatively weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.
-		\textbf{5.} The metric negatively weighs additions and deletions more than displacements.
+		\textbf{1.} The metric considers the whole \gls{OGM} in its evaluation.
+		\textbf{2.} The metric weighs local deletion or addition errors more than global noise errors.
+		\textbf{3.} The metric weighs big displacement errors more than small displacement errors. 
+		\textbf{4.} The metric weighs errors close to the \gls{AV} (often the center of the \gls{OGM}) more than errors further from the \gls{AV}.
+		\textbf{5.} The metric weighs additions and deletions more than displacements.
 	}
 	\label{tab:metrics}
 \end{table}
-
 % Also a part about loss functions? See Hoerman2020 Loss Functions
